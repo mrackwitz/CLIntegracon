@@ -1,4 +1,4 @@
-require 'file_tree_spec'
+require 'CLIntegracon/file_tree_spec'
 
 module CLIntegracon
   class FileTreeSpecContext

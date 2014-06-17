@@ -1,5 +1,5 @@
 require 'pathname'
-require 'diff'
+require 'CLIntegracon/diff'
 
 module CLIntegracon
   class FileTreeSpec
