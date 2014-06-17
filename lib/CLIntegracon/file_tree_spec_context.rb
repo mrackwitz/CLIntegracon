@@ -44,9 +44,11 @@ module CLIntegracon
     # "Designated" initializer
     #
     # @param [Hash<Symbol,String>] properties
+    #        The configuration parameter (optional):
     #        :spec_dir    => see self.spec_dir
     #        :before_dir  => see self.before_dir
     #        :after_dir   => see self.after_dir
+    #        :temp_dir    => see self.temp_dir
     #
     # @param [Block<(Pathname,Pathname,Bool,String) -> ()>] block
     #        The block, which adapts to the used test framework. It expects the following arguments:
@@ -55,7 +57,7 @@ module CLIntegracon
     #        * is_equal: whether the files are equal
     #        * diff_output: the output of the diff
     #
-    def initialize(properties, &spec_generator)
+    def initialize(properties={}, &spec_generator)
       self.spec_dir    = properties[:spec_dir]    || Pathname('.')
       self.before_dir  = properties[:before_dir]  || Pathname('before')
       self.after_dir   = properties[:after_dir]   || Pathname('after')
