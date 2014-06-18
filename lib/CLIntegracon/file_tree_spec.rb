@@ -58,12 +58,11 @@ module CLIntegracon
         end
       end
 
-      Dir.glob("#{after_path}/**/*") do |expected_path|
+      glob_all after_path do |expected_path|
         expected = Pathname(expected_path)
         next unless expected.file?
 
-        relative_path = expected.relative_path_from(after_path)
-        produced = context.temp_dir + spec_folder + relative_path
+        produced = context.temp_dir + spec_folder + expected
 
         diff = diff_files(expected, produced)
 
@@ -89,8 +88,8 @@ module CLIntegracon
     #        It will receive an Array.
     #
     def check_unexpected_files(&block)
-      expected_files = Dir.chdir(after_path) { Dir.glob("**/*") }
-      produced_files = Dir.glob("**/*")
+      expected_files = glob_all after_path
+      produced_files = glob_all
       unexpected_files = produced_files - expected_files
 
       # Filter ignored paths
@@ -100,6 +99,21 @@ module CLIntegracon
     end
 
     protected
+
+      # Searches recursively for all files and take care for including hidden files
+      # if this is configured in the context.
+      #
+      # @param [String] path
+      #        The relative or absolute path to search in (optional)
+      #
+      # @param [Block<(String)->()>] block
+      #        The block to iterate all the files (optional)
+      #
+      def glob_all(path=nil, &block)
+        Dir.chdir path || '.' do
+          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0, &block)
+        end
+      end
 
       # Find the special behavior for a given path
       #
