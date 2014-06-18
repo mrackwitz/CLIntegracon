@@ -37,6 +37,12 @@ module CLIntegracon
     #         the special paths of files, where an individual file diff handling is needed
     attr_accessor :special_paths
 
+    # @return [Bool]
+    #         whether to include hidden files, when searching directories (true by default)
+    attr_accessor :include_hidden_files
+    alias :include_hidden_files? :include_hidden_files
+
+
     #-----------------------------------------------------------------------------#
 
     # @!group Initializer
@@ -65,6 +71,7 @@ module CLIntegracon
       self.spec_generator = spec_generator
       self.transform_paths = {}
       self.special_paths = {}
+      self.include_hidden_files = true
     end
 
 
