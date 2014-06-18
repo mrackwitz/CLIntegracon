@@ -1,5 +1,6 @@
 require 'bacon'
 require 'CLIntegracon'
+require 'colored'
 
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
@@ -59,7 +60,13 @@ describe "Integration" do
 
       spec.check_unexpected_files do |files|
         it "should not produce unexpected files" do
-          files.size.should.equal 0
+          description = []
+          description << "Unexpected files:"
+          description += files.map { |f| "  * #{f.to_s.green}" }
+
+          files.should.satisfy(description * "\n") do
+            files.size == 0
+          end
         end
       end
     end
