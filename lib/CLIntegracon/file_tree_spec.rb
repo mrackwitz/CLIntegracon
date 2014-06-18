@@ -46,7 +46,7 @@ module CLIntegracon
     # Compares the expected and produced directory by using the rules
     # defined in the context
     #
-    # @param [Block<Diff>] diff_block
+    # @param [Block<(Diff)->()>] diff_block
     #        The block, where you will likely define a test for each file to compare.
     #        It will receive a Diff of each of the expected and produced files.
     #
