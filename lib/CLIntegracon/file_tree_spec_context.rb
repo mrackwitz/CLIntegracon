@@ -58,7 +58,7 @@ module CLIntegracon
     #        * diff_output: the output of the diff
     #
     def initialize(properties={}, &spec_generator)
-      self.spec_dir    = properties[:spec_dir]    || Pathname('.')
+      self.spec_dir    = (properties[:spec_dir]    || Pathname('.')).realpath
       self.before_dir  = properties[:before_dir]  || Pathname('before')
       self.after_dir   = properties[:after_dir]   || Pathname('after')
       self.temp_dir    = properties[:temp_dir]    || Pathname('tmp')
