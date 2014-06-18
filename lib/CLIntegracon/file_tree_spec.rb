@@ -80,6 +80,25 @@ module CLIntegracon
       end
     end
 
+    # Compares the expected and produced directory by using the rules
+    # defined in the context for unexpected files.
+    #
+    # This is separate because you probably don't want to define an extra
+    # test case for each file, which wasn't expected at all. So you can
+    # keep your test cases consistent.
+    #
+    # @param [Block<(Array)->()>] diff_block
+    #        The block, where you will likely define a test that no unexpected files exists.
+    #        It will receive an Array.
+    #
+    def check_unexpected_files(&block)
+      expected_files = Dir.chdir(after_path) { Dir.glob("**/*") }
+      produced_files = Dir.glob("**/*")
+      unexpected_files = produced_files - expected_files
+
+      block.call unexpected_files
+    end
+
     protected
 
       # Compares two files to check if they are identical and produces a clear diff

@@ -56,6 +56,12 @@ describe "Integration" do
           end
         end
       end
+
+      spec.check_unexpected_files do |files|
+        it "should not produce unexpected files" do
+          files.size.should.equal 0
+        end
+      end
     end
   end
 
