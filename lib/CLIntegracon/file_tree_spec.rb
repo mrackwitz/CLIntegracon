@@ -67,14 +67,11 @@ module CLIntegracon
 
         diff = diff_files(expected, produced)
 
-        context.special_paths.each do |key, block|
-          matched = key.respond_to?(:match) ? key.match(produced.to_s) : key == produced
-          next unless matched
-          diff.preparator = block
-          break
-        end
+        block = special_behavior_for_path produced
 
-        next if diff.preparator == context.class.nop
+        next if block == context.class.nop
+
+        diff.preparator = block unless block.nil?
 
         diff_block.call diff
       end
@@ -96,10 +93,27 @@ module CLIntegracon
       produced_files = Dir.glob("**/*")
       unexpected_files = produced_files - expected_files
 
+      # Filter ignored paths
+      unexpected_files.reject! { |path| special_behavior_for_path(Pathname(path)) == context.class.nop }
+
       block.call unexpected_files
     end
 
     protected
+
+      # Find the special behavior for a given path
+      #
+      # @return [Block<(Pathname) -> to_s>]
+      #         This block takes the Pathname and transforms the file in a better comparable
+      #         state. If it returns nil, the file is ignored.
+      #
+      def special_behavior_for_path(path)
+        context.special_paths.each do |key, block|
+          matched = key.respond_to?(:match) ? key.match(path.to_s) : key == path.to_s
+          next unless matched
+          return block
+        end
+      end
 
       # Compares two files to check if they are identical and produces a clear diff
       # to highlight the differences.
