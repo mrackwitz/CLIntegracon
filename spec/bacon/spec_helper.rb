@@ -16,7 +16,7 @@ end
 
 describe "Integration" do
 
-  context = CLIntegracon::FileTreeSpecContext.new
+  context = CLIntegracon::FileTreeSpecContext.new spec_dir: Pathname(File.expand_path('..', __FILE__))
 
   subject = CLIntegracon::Subject.new('$ git', 'git').tap do |subject|
     subject.environment_vars = {
