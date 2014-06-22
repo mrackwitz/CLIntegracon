@@ -135,6 +135,7 @@ module CLIntegracon
           next unless matched
           return block
         end
+        return nil
       end
 
       # Compares two files to check if they are identical and produces a clear diff
