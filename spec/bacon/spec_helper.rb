@@ -45,9 +45,7 @@ describe "Integration" do
       end
 
       spec.compare do |diff|
-        relative_path = diff.expected.relative_path_from(context.spec_dir)
-
-        it relative_path.to_s do
+        it diff.expected.to_s do
           diff.produced.should.exist?
 
           description = []
