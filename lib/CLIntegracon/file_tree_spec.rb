@@ -123,7 +123,11 @@ module CLIntegracon
       #
       def special_behavior_for_path(path)
         context.special_paths.each do |key, block|
-          matched = key.respond_to?(:match) ? key.match(path.to_s) : key == path.to_s
+          matched = if key.is_a?(Regexp)
+            path.match(key)
+          else
+            File.fnmatch(key, path)
+          end
           next unless matched
           return block
         end
