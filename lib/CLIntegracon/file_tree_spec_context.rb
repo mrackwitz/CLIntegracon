@@ -67,7 +67,7 @@ module CLIntegracon
       self.spec_dir    = (properties[:spec_dir]    || Pathname('.')).realpath
       self.before_dir  = properties[:before_dir]  || Pathname('before')
       self.after_dir   = properties[:after_dir]   || Pathname('after')
-      self.temp_dir    = properties[:temp_dir]    || Pathname('tmp')
+      self.temp_dir    = (properties[:temp_dir]    || Pathname('tmp')).realdirpath
       self.spec_generator = spec_generator
       self.transform_paths = {}
       self.special_paths = {}
