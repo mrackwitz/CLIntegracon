@@ -46,7 +46,13 @@ describe "Integration" do
 
       spec.compare do |diff|
         it diff.expected.to_s do
-          diff.produced.should.exist?
+          description = []
+          description << "Missing file:"
+          description << "  * #{diff.expected.to_s.red}"
+
+          diff.produced.should.satisfy(description * "\n") do
+            diff.produced.exist?
+          end
 
           description = []
           description << "File comparison error `#{diff.expected}`"
