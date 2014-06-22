@@ -17,14 +17,17 @@ end
 
 describe "Integration" do
 
-  context = CLIntegracon::FileTreeSpecContext.new spec_dir: Pathname(File.expand_path('..', __FILE__))
+  context = CLIntegracon::FileTreeSpecContext.new(spec_dir: Pathname(File.expand_path('..', __FILE__))).tap do |context|
+    context.ignores '**/.git/**'
+  end
 
-  subject = CLIntegracon::Subject.new('$ git', 'git').tap do |subject|
+  subject = CLIntegracon::Subject.new('bundle', 'bundle exec bundle').tap do |subject|
     subject.environment_vars = {
-        'GIT_INDEX_FILE' => '.fool/custom-index',
+        #'BUNDLE_GEMFILE' => 'Jewelfile'
     }
     subject.default_args = [
-        '--git-dir=.fool',
+        '--verbose',
+        '--no-color'
     ]
     subject.has_special_path ROOT.to_s, 'ROOT'
   end
@@ -73,12 +76,12 @@ describe "Integration" do
   end
 
 
-  describe 'git' do
+  describe 'bundle' do
 
-    describe 'init' do
+    describe 'gem' do
 
-      describe 'Initializes a new repository' do
-        behaves_like_a 'CLI', 'init', 'init'
+      describe 'Create a simple gem, suitable for development with bundler' do
+        behaves_like_a 'CLI', 'gem Test', 'gem'
       end
 
     end
