@@ -105,7 +105,7 @@ module CLIntegracon
     #
     def launch(arguments, &block)
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
-      args = "#{default_args.join(' ')} #{arguments}"
+      args = "#{arguments} #{default_args.join(' ')}"
       command = "#{vars} #{executable} #{args} 2>&1"
 
       output = `#{command}`
