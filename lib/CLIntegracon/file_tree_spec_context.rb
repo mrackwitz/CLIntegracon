@@ -180,8 +180,12 @@ module CLIntegracon
       def copy_files(folder)
         source = spec_dir + Pathname(folder.to_s) + before_dir
         destination = temp_dir + folder
-        destination.mkpath
-        FileUtils.cp_r(Dir.glob("#{source}/*"), destination)
+        if include_hidden_files?
+          FileUtils.cp_r(source, destination)
+        else
+          destination.mkpath
+          FileUtils.cp_r(Dir.glob("#{source}/*"), destination)
+        end
       end
 
   end
