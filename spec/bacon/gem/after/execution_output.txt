@@ -6,4 +6,4 @@
       create  Test/Test.gemspec
       create  Test/lib/Test.rb
       create  Test/lib/Test/version.rb
-Initializing git repo in /Users/mariusrackwitz/Development/CLIntegracon/tmp/gem/Test
+Initializing git repo in ROOT/tmp/bacon_specs/gem/Test
