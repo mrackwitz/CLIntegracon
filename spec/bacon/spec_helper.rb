@@ -19,7 +19,7 @@ describe "Integration" do
 
   context = CLIntegracon::FileTreeSpecContext.new({
     spec_dir: Pathname(File.expand_path('..', __FILE__)),
-    temp_dir: Pathname(File.expand_path('../../../tmp', __FILE__))
+    temp_dir: Pathname(File.expand_path('../../../tmp/bacon_specs', __FILE__))
   }).tap do |context|
     context.ignores '**/.git/**'
   end
