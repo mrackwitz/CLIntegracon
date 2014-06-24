@@ -2,7 +2,7 @@ require 'bacon'
 require 'CLIntegracon'
 require 'colored'
 
-ROOT = Pathname.new(File.expand_path('../../', __FILE__))
+ROOT = Pathname.new(File.expand_path('../../../', __FILE__))
 
 
 module Bacon
