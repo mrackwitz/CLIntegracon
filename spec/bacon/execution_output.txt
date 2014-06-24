@@ -1,0 +1,18 @@
+Integration
+  bundle
+    gem
+      Create a simple gem, suitable for development with bundler
+        - $ bundle gem Test
+        - .gitkeep
+        - execution_output.txt
+        - Test/.gitignore
+        - Test/Gemfile
+        - Test/lib/Test/version.rb
+        - Test/lib/Test.rb
+        - Test/LICENSE.txt
+        - Test/Rakefile
+        - Test/README.md
+        - Test/Test.gemspec
+        - should not produce unexpected files
+
+12 specifications (22 requirements), 0 failures, 0 errors
