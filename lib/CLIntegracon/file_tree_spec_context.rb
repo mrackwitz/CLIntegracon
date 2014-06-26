@@ -54,10 +54,10 @@ module CLIntegracon
     #        :temp_dir    => see self.temp_dir
     #
     def initialize(properties={})
-      self.spec_dir    = (properties[:spec_dir]    || Pathname('.')).realpath
-      self.before_dir  = properties[:before_dir]  || Pathname('before')
-      self.after_dir   = properties[:after_dir]   || Pathname('after')
-      self.temp_dir    = (properties[:temp_dir]    || Pathname('tmp')).realdirpath
+      self.spec_dir    = properties[:spec_dir]    || '.'
+      self.temp_dir    = properties[:temp_dir]    || 'tmp'
+      self.before_dir  = properties[:before_dir]  || 'before'
+      self.after_dir   = properties[:after_dir]   || 'after'
       self.transform_paths = {}
       self.special_paths = {}
       self.include_hidden_files = true
@@ -74,6 +74,30 @@ module CLIntegracon
     #         Does nothing
     def self.nop
       @nop ||= Proc.new {}
+    end
+
+
+    #-----------------------------------------------------------------------------#
+
+    # @!group Setter
+
+    def spec_dir=(spec_dir)
+      # Spec dir has to exist.
+      @spec_dir = Pathname(spec_dir).realpath
+    end
+
+    def temp_dir=(temp_dir)
+      # Temp dir, doesn't have to exist itself, it will been created, but let's ensure
+      # that at least the last but one path component exist by using `realdirpath`.
+      @temp_dir = Pathname(temp_dir).realdirpath
+    end
+
+    def before_dir=(before_dir)
+      @before_dir = Pathname(before_dir)
+    end
+
+    def after_dir=(after_dir)
+      @after_dir = Pathname(after_dir)
     end
 
 
