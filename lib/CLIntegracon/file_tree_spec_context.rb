@@ -26,9 +26,6 @@ module CLIntegracon
     #         the execution. This must not be the same as the before_dir or the after_dir.
     attr_accessor :temp_dir
 
-    # @return [Proc] The proc generating specs in the given DSL (RSpec, Bacon, …)
-    attr_accessor :spec_generator
-
     # @return [Hash<String,Block>]
     #         the special paths of files, which need to be transformed in a better comparable form
     attr_accessor :transform_paths
@@ -56,19 +53,11 @@ module CLIntegracon
     #        :after_dir   => see self.after_dir
     #        :temp_dir    => see self.temp_dir
     #
-    # @param [Block<(Pathname,Pathname,Bool,String) -> ()>] block
-    #        The block, which adapts to the used test framework. It expects the following arguments:
-    #        * expected: the path of the expected file
-    #        * produced: the path found in the temporary directory
-    #        * is_equal: whether the files are equal
-    #        * diff_output: the output of the diff
-    #
-    def initialize(properties={}, &spec_generator)
+    def initialize(properties={})
       self.spec_dir    = (properties[:spec_dir]    || Pathname('.')).realpath
       self.before_dir  = properties[:before_dir]  || Pathname('before')
       self.after_dir   = properties[:after_dir]   || Pathname('after')
       self.temp_dir    = (properties[:temp_dir]    || Pathname('tmp')).realdirpath
-      self.spec_generator = spec_generator
       self.transform_paths = {}
       self.special_paths = {}
       self.include_hidden_files = true
