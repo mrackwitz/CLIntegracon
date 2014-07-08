@@ -30,8 +30,20 @@ begin
       'spec:bacon_integration'
     ]
 
+    desc 'Run all unit specs'
+    task :unit do
+      sh "bundle exec bacon #{specs('unit/**/*')}"
+    end
+
+    def specs(dir)
+      FileList["spec/#{dir}_spec.rb"].shuffle.join(' ')
+    end
+
+    desc 'Run all specs'
+    task :all => [:unit, :integration]
+
   end
 
   desc 'Run all specs'
-  task :spec => ['spec:integration']
+  task :spec => 'spec:all'
 end
