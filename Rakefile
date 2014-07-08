@@ -14,7 +14,7 @@ begin
     desc 'Run the bacon integration spec'
     task :bacon_integration => [:prepare] do
       verbose false
-      sh 'bundle exec bacon spec/bacon/spec_helper.rb > tmp/bacon_execution_output.txt'
+      sh 'rake spec:bacon_integration_runner > tmp/bacon_execution_output.txt'
       puts 'Run bacon spec …'
       sh 'diff spec/bacon/execution_output.txt tmp/bacon_execution_output.txt' do |ok, res|
         if ok
@@ -23,6 +23,11 @@ begin
           puts '✗ Spec for bacon failed.'.red
         end
       end
+    end
+
+    desc 'Run the tasks for bacon integration spec verbose and without any outer expectations'
+    task :bacon_integration_runner do
+      sh 'bundle exec bacon spec/bacon/spec_helper.rb'
     end
 
     desc 'Run all integration specs'
