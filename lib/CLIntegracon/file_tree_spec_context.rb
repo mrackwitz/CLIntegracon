@@ -22,8 +22,11 @@ module CLIntegracon
     attr_accessor :after_dir
 
     # @return [Pathname]
-    #         The relative path from a concrete spec directory to the directory containing the produced files after
-    #         the execution. This must not be the same as the before_dir or the after_dir.
+    #         The relative path to the directory containing the produced files after the
+    #         execution. This must not be the same as the before_dir or the after_dir.
+    #
+    # @note   **Attention**: This path will been deleted before running to ensure a clean sandbox for testing.
+    #
     attr_accessor :temp_dir
 
     # @return [Hash<String,Block>]
