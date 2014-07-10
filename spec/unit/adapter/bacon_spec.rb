@@ -25,6 +25,20 @@ describe 'CLIntegracon::Adapter::Bacon' do
       evaluate_expr("describe('test') { describe_cli('test') {}.is_a? Bacon::Context }").should.success?
     end
 
+    describe 'extends context with methods' do
+      it 'can access #subject' do
+        evaluate_expr("describe_cli('test') {}.respond_to? :subject").should.success?
+      end
+
+      it 'can access #context' do
+        evaluate_expr("describe_cli('test') {}.respond_to? :context").should.success?
+      end
+
+      it 'can access #behaves_like_a' do
+        evaluate_expr("describe_cli('test') {}.respond_to? :behaves_like_a").should.success?
+      end
+    end
+
   end
 
 end
