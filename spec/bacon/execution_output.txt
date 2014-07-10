@@ -1,4 +1,4 @@
-Integration
+CLIntegracon::Adapter::Bacon
   bundle
     gem
       Create a simple gem, suitable for development with bundler

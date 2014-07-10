@@ -11,7 +11,7 @@ CLIntegracon.configure do |c|
 end
 
 
-describe 'Integration' do
+describe CLIntegracon::Adapter::Bacon do
 
   describe_cli 'bundle' do
 
