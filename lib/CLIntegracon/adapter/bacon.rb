@@ -77,7 +77,14 @@ module CLIntegracon::Adapter::Bacon
   #
   def self.describe_cli(subject_name, context_options = {}, &block)
     describe subject_name do
-      extend Context
+      # Make Context methods available
+      # WORKAROUND: Bacon auto-inherits singleton methods to child contexts
+      # by using the runtime and won't include methods in modules included
+      # by the parent context. We have to ensure that the methods will be
+      # accessible by the child contexts by defining them as singleton methods.
+      Context.instance_methods.each do |method|
+        define_singleton_method method, Context.instance_method(method)
+      end
 
       subject do
         CLIntegracon::Subject.new(subject_name, context_options[:executable] || subject_name)
