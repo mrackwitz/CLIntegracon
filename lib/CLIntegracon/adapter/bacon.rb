@@ -75,7 +75,7 @@ module CLIntegracon::Adapter::Bacon
   #         the block to provide further sub-specs or requirements, as
   #         known from {Bacon::Context.describe}
   #
-  def self.describe_cli(subject_name, context_options = {}, &block)
+  def describe_cli(subject_name, context_options = {}, &block)
     describe subject_name do
       # Make Context methods available
       # WORKAROUND: Bacon auto-inherits singleton methods to child contexts
@@ -148,14 +148,12 @@ end
 # Make #describe_cli global available
 module Kernel #:no-doc:
   private
-  def describe_cli(subject_name, &block)
-    CLIntegracon::Adapter::Bacon.describe_cli(subject_name, &block)
-  end
+  define_method :describe_cli, CLIntegracon::Adapter::Bacon.instance_method(:describe_cli)
 end
 
 # Patch Bacon::Context to support #describe_cli
 module Bacon
   class Context
-    extend CLIntegracon::Adapter::Bacon
+    define_method :describe_cli, CLIntegracon::Adapter::Bacon.instance_method(:describe_cli)
   end
 end
