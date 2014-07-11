@@ -1,12 +1,12 @@
 require 'colored'
 
+# Layout structure
 module CLIntegracon
   module Adapter
-    module Bacon
-    end
   end
 end
 
+# Define concrete adapter
 module CLIntegracon::Adapter::Bacon
   module Context
 
