@@ -158,6 +158,13 @@ module CLIntegracon
 
     # @!group Interaction
 
+    # Prepare the temporary directory
+    #
+    def prepare!
+      temp_dir.rmtree if temp_dir.exist?
+      temp_dir.mkpath
+    end
+
     # Run a specific spec with given folder
     #
     # @param [String] folder
@@ -170,8 +177,7 @@ module CLIntegracon
     #        with the test framework of your choice.
     #
     def run(spec_folder, &block)
-      temp_dir.rmtree if temp_dir.exist?
-      temp_dir.mkpath
+      prepare!
 
       copy_files(spec_folder)
 
