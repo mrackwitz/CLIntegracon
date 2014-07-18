@@ -43,6 +43,24 @@ module CLIntegracon
       @spec_folder = spec_folder
     end
 
+    # Run this spec
+    #
+    # @param [Block<(FileTreeSpec)->()>] block
+    #        The block, which will be executed after chdir into the created temporary
+    #        directory. In this block you will likely run your modifications to the
+    #        file system and use the received FileTreeSpec instance to make asserts
+    #        with the test framework of your choice.
+    #
+    def run(&block)
+      context.prepare!
+
+      copy_files!
+
+      Dir.chdir(context.temp_dir + spec_folder) do
+        block.call self
+      end
+    end
+
     # Compares the expected and produced directory by using the rules
     # defined in the context
     #
@@ -103,6 +121,23 @@ module CLIntegracon
     end
 
     protected
+
+      # Copies the before subdirectory of the given tests folder in the temporary
+      # directory.
+      #
+      # @param [String] folder
+      #        The name of the folder of the tests
+      #
+      def copy_files!
+        source = before_path
+        destination = context.temp_dir + spec_folder
+        if context.include_hidden_files?
+          FileUtils.cp_r(source, destination)
+        else
+          destination.mkpath
+          FileUtils.cp_r(Dir.glob("#{source}/*"), destination)
+        end
+      end
 
       # Searches recursively for all files and take care for including hidden files
       # if this is configured in the context.

@@ -94,7 +94,7 @@ module CLIntegracon::Adapter::Bacon
         args = options[:args] || ''
         dir = options[:dir] or raise ArgumentError.new("Spec directory is missing!")
 
-        context.run dir do |spec|
+        context.spec(dir).run do |spec|
           subject.launch args do |status, output|
             it "$ #{subject_name} #{args}" do
               status.should.satisfy("Binary failed\n\n#{output}") do

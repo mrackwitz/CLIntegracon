@@ -76,7 +76,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
 
       before do
         defines_specs.once
-        CLIntegracon::FileTreeSpecContext.any_instance.stubs(:run)
+        CLIntegracon::FileTreeSpec.any_instance.stubs(:run)
       end
 
       it 'knows the implicit defined shared behavior' do
@@ -89,7 +89,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
 
       it 'executes the FileTreeSpecContext' do
         describe_cli 'git' do
-          context.expects(:run).once
+          context.expects(:spec).once.returns mock(run: true)
           behaves_like_a 'git', dir: 'git'
         end
       end
