@@ -91,6 +91,8 @@ module CLIntegracon
 
     # Runs the executable with the given arguments in the temporary directory.
     #
+    # @note: You can check by `$?.success?` if the execution succeeded.
+    #
     # @param [String] arguments
     #        The arguments to pass to the executable
     #
@@ -100,8 +102,8 @@ module CLIntegracon
     #        * status: the status of the execution
     #        * output: the captured output on STDOUT and STDERR while execution
     #
-    # @return [Bool]
-    #         Whether the executable exited with a successful status code or not
+    # @return [String]
+    #         The output, which is emitted while execution from the binary.
     #
     def launch(arguments, &block)
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
@@ -122,7 +124,7 @@ module CLIntegracon
         file.write output
       end
 
-      $?.success?
+      output
     end
 
   end
