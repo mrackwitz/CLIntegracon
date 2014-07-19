@@ -34,7 +34,8 @@ describe 'CLIntegracon::Adapter::Bacon' do
       it 'can access to methods defined in CLIntegracon::Adapter::Bacon::Context' do
         @context.should.respond_to? :subject
         @context.should.respond_to? :context
-        @context.should.respond_to? :behaves_like_a
+        @context.should.respond_to? :cli_spec
+        @context.should.respond_to? :file_spec
       end
     end
 
@@ -72,17 +73,17 @@ describe 'CLIntegracon::Adapter::Bacon' do
       # TODO
     end
 
-    describe '#behaves_like_a' do
+    describe '#file_spec' do
 
       before do
         defines_specs.once
         CLIntegracon::FileTreeSpec.any_instance.stubs(:run)
       end
 
-      it 'knows the implicit defined shared behavior' do
+      it 'knows the on-the-fly defined shared behavior' do
         describe_cli 'git' do
           lambda {
-            behaves_like_a 'git', dir: 'git'
+            behaves_like file_spec('any_dir')
           }.should.not.raise?(NameError)
         end
       end
@@ -90,7 +91,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
       it 'executes the FileTreeSpecContext' do
         describe_cli 'git' do
           context.expects(:spec).once.returns mock(run: true)
-          behaves_like_a 'git', dir: 'git'
+          behaves_like file_spec('git')
         end
       end
 

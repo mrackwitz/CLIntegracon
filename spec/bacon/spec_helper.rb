@@ -35,7 +35,7 @@ describe CLIntegracon::Adapter::Bacon do
     describe 'gem' do
 
       describe 'Create a simple gem, suitable for development with bundler' do
-        behaves_like_a 'bundle', args: 'gem Test', dir: 'gem'
+        behaves_like cli_spec('gem', 'gem Test')
       end
 
     end
