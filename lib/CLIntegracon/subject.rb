@@ -96,23 +96,15 @@ module CLIntegracon
     # @param [String] arguments
     #        The arguments to pass to the executable
     #
-    # @param [Block<(Process::Status,String)->()>] block
-    #        The block which handles the execution result and output.
-    #        It expects the following arguments:
-    #        * status: the status of the execution
-    #        * output: the captured output on STDOUT and STDERR while execution
-    #
     # @return [String]
     #         The output, which is emitted while execution from the binary.
     #
-    def launch(arguments, &block)
+    def launch(arguments)
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
       args = "#{arguments} #{default_args.join(' ')}"
       command = "#{vars} #{executable} #{args} 2>&1"
 
       output = `#{command}`
-
-      block.call($?, output)
 
       File.open(output_path, 'w') do |file|
         file.write command.sub(executable, name)
