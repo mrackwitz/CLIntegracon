@@ -8,10 +8,14 @@ Gem::Specification.new do |spec|
   spec.version       = CLIntegracon::VERSION
   spec.authors       = ["Marius Rackwitz"]
   spec.email         = ["git@mariusrackwitz.de"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/mrackwitz/CLIntegracon"
   spec.license       = "MIT"
+
+  spec.summary       = "Integration specs for your CLI"
+  spec.description   = "CLIntegracon allows you to build Integration specs for your CLI,"  \
+                       "independent if they are based on Ruby or another technology."      \
+                       "It is especially useful if your command modifies the file system." \
+                       "It provides an integration for Bacon."
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
