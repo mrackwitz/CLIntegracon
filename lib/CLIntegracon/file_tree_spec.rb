@@ -84,7 +84,7 @@ module CLIntegracon
 
         diff = diff_files(expected, produced)
 
-        block = special_behavior_for_path produced
+        block = special_behavior_for_path expected
 
         next if block == context.class.nop
 
