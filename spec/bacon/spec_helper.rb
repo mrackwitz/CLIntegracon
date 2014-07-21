@@ -30,6 +30,7 @@ describe CLIntegracon::Adapter::Bacon do
     end
 
     context do
+      ignores '.DS_Store'
       ignores '.gitkeep'
     end
 
