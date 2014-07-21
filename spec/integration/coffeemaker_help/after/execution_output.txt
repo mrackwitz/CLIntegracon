@@ -1,0 +1,16 @@
+COFFEE_MAKER_FILE=Coffeemakerfile.yml coffee-maker --help --verbose --no-ansi 2>&1
+Usage:
+
+    $ coffee-maker
+
+      Make delicious coffee from the comfort of your terminal.
+
+Options:
+
+    --no-milk                  Don’t add milk
+    --sweetner=[sugar|honey]   Use one of the available sweetners
+    --completion-script        Print the auto-completion script
+    --version                  Show the version of the tool
+    --verbose                  Show more debugging information
+    --no-ansi                  Show output without ANSI codes
+    --help                     Show help banner of specified command

@@ -1,0 +1,4 @@
+COFFEE_MAKER_FILE=Coffeemakerfile.yml coffee-maker --sweetner=honey --verbose --no-ansi 2>&1
+* Brewing Affogato
+* Brewing RedTux
+* Enjoy!

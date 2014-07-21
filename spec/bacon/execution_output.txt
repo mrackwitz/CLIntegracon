@@ -1,18 +1,25 @@
 CLIntegracon::Adapter::Bacon
-  bundle
-    gem
-      Create a simple gem, suitable for development with bundler
-        - $ bundle gem Test
-        - .gitkeep
+  coffee-maker
+    Brew recipes
+      without milk
+        - $ coffee-maker --no-milk
+        - Affogato.brewed-coffee
+        - BlackEye.brewed-coffee
+        - CaPheSuaDa.brewed-coffee
+        - Coffeemakerfile.yml
         - execution_output.txt
-        - Test/.gitignore
-        - Test/Gemfile
-        - Test/lib/Test/version.rb
-        - Test/lib/Test.rb
-        - Test/LICENSE.txt
-        - Test/Rakefile
-        - Test/README.md
-        - Test/Test.gemspec
+        - RedTux.brewed-coffee
         - should not produce unexpected files
+      with honey as sweetner
+        - $ coffee-maker --sweetner=honey
+        - Affogato.brewed-coffee
+        - Coffeemakerfile.yml
+        - execution_output.txt
+        - RedTux.brewed-coffee
+        - should not produce unexpected files
+    Get help
+      - $ coffee-maker --help
+      - execution_output.txt
+      - should not produce unexpected files
 
-12 specifications (22 requirements), 0 failures, 0 errors
+17 specifications (28 requirements), 0 failures, 0 errors

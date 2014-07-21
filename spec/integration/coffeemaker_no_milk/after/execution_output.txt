@@ -1,0 +1,6 @@
+COFFEE_MAKER_FILE=Coffeemakerfile.yml coffee-maker --no-milk --verbose --no-ansi 2>&1
+* Brewing BlackEye
+* Brewing Affogato
+* Brewing CaPheSuaDa
+* Brewing RedTux
+* Enjoy!

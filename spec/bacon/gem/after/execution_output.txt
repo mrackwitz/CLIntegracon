@@ -1,9 +1,0 @@
- bundle gem Test --verbose --no-color 2>&1      create  Test/Gemfile
-      create  Test/Rakefile
-      create  Test/LICENSE.txt
-      create  Test/README.md
-      create  Test/.gitignore
-      create  Test/Test.gemspec
-      create  Test/lib/Test.rb
-      create  Test/lib/Test/version.rb
-Initializing git repo in ROOT/tmp/bacon_specs/gem/Test
