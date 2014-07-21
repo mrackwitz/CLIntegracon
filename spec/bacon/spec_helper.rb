@@ -26,6 +26,7 @@ describe CLIntegracon::Adapter::Bacon do
             '--no-ansi'
         ]
         subject.has_special_path ROOT.to_s, 'ROOT'
+        subject.has_special_path `bundle show claide`.rstrip, 'CLAIDE_SRC'
       end
     end
 
