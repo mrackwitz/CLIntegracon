@@ -91,8 +91,9 @@ module CLIntegracon
 
     def temp_dir=(temp_dir)
       # Temp dir, doesn't have to exist itself, it will been created, but let's ensure
-      # that at least the last but one path component exist by using `realdirpath`.
-      @temp_dir = Pathname(temp_dir).realdirpath
+      # that at least the last but one path component exist.
+      raise "temp_dir's parent directory doesn't exist" unless (Pathname(temp_dir) + '..').exist?
+      @temp_dir = Pathname(temp_dir).realpath
     end
 
     def before_dir=(before_dir)
