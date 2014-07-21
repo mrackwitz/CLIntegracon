@@ -90,7 +90,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
 
       it 'executes the FileTreeSpecContext' do
         describe_cli 'git' do
-          context.expects(:spec).once.returns mock(run: true)
+          context.expects(:spec).once.returns mock(:run => true)
           behaves_like file_spec('git')
         end
       end
