@@ -179,8 +179,15 @@ module CLIntegracon::Adapter::Bacon
       # by using the runtime and won't include methods in modules included
       # by the parent context. We have to ensure that the methods will be
       # accessible by the child contexts by defining them as singleton methods.
+      extended = self.extend Context
       Context.instance_methods.each do |method|
-        define_singleton_method method, Context.instance_method(method)
+        class << self; self end.instance_eval do
+          unbound_method = extended.method(method).unbind
+
+          send :define_method, method do |*args, &block|
+            unbound_method.bind(self).call(*args, &block)
+          end
+        end
       end
 
       subject do
