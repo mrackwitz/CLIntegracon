@@ -184,8 +184,8 @@ module CLIntegracon::Adapter::Bacon
         class << self; self end.instance_eval do
           unbound_method = extended.method(method).unbind
 
-          send :define_method, method do |*args, &block|
-            unbound_method.bind(self).call(*args, &block)
+          send :define_method, method do |*args, &b|
+            unbound_method.bind(self).call(*args, &b)
           end
         end
       end
