@@ -33,6 +33,10 @@ describe CLIntegracon::Adapter::Bacon do
     context do
       ignores '.DS_Store'
       ignores '.gitkeep'
+
+      has_special_handling_for 'execution_output.txt' do |path|
+        File.read(path).gsub(/:in `<main>'$/, '') # workaround different stack trace format by ruby-1.8.7
+      end
     end
 
     describe 'Brew recipes' do
