@@ -112,7 +112,7 @@ module CLIntegracon
 
       # Select only files
       unexpected_files.map! { |path| Pathname(path) }
-      unexpected_files.select! { |path| path.file? }
+      unexpected_files.reject! { |path| !path.file? }
 
       # Filter ignored paths
       unexpected_files.reject! { |path| special_behavior_for_path(path) == context.class.nop }
