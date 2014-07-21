@@ -48,7 +48,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
       behaves_like 'extended context'
     end
 
-    describe 'extends context with methods' do
+    describe 'extends inner context with methods' do
       before do
         defines_specs.twice
         parent_context = self
