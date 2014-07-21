@@ -108,6 +108,7 @@ module CLIntegracon
 
       File.open(output_path, 'w') do |file|
         file.write command.sub(executable, name)
+        file.write "\n"
 
         special_paths.each do |key, path|
           output.gsub!(path, key)
