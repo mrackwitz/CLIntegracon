@@ -194,14 +194,11 @@ module CLIntegracon::Adapter::Bacon
 end
 
 # Make #describe_cli global available
-module Kernel #:no-doc:
-  private
-  define_method :describe_cli, CLIntegracon::Adapter::Bacon.instance_method(:describe_cli)
-end
+extend CLIntegracon::Adapter::Bacon
 
 # Patch Bacon::Context to support #describe_cli
 module Bacon
   class Context
-    define_method :describe_cli, CLIntegracon::Adapter::Bacon.instance_method(:describe_cli)
+    include CLIntegracon::Adapter::Bacon
   end
 end
