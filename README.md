@@ -1,6 +1,6 @@
 # CLIntegracon
 
-[![Gem](https://img.shields.io/gem/v/CLIntegracon.svg?style=flat)](http://rubygems.org/gems/CLIntegracon)
+[![Gem](https://img.shields.io/gem/v/clintegracon.svg?style=flat)](http://rubygems.org/gems/clintegracon)
 [![Build Status](https://img.shields.io/travis/mrackwitz/CLIntegracon/master.svg?style=flat)](https://travis-ci.org/mrackwitz/CLIntegracon)
 [![Coverage](https://img.shields.io/codeclimate/coverage/github/mrackwitz/CLIntegracon.svg?style=flat)](https://codeclimate.com/github/mrackwitz/CLIntegracon)
 [![Code Climate](https://img.shields.io/codeclimate/github/mrackwitz/CLIntegracon.svg?style=flat)](https://codeclimate.com/github/mrackwitz/CLIntegracon)
@@ -15,7 +15,7 @@ Furthermore it provides an integration for *Bacon*.
 
 Add this line to your application's Gemfile:
 
-    gem 'CLIntegracon'
+    gem 'clintegracon'
 
 And then execute:
 
@@ -23,7 +23,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install CLIntegracon
+    $ gem install clintegracon
 
 
 ## Usage

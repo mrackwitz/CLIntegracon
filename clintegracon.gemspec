@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'CLIntegracon/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "CLIntegracon"
+  spec.name          = "clintegracon"
   spec.version       = CLIntegracon::VERSION
   spec.authors       = ["Marius Rackwitz"]
   spec.email         = ["git@mariusrackwitz.de"]
