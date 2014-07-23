@@ -1,3 +1,2 @@
 class RedTux < BrewedCoffee
-  @milk = true
-  @sweetner = honey
+  @sweetner = sugar

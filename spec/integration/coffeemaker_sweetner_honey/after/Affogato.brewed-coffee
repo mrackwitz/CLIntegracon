@@ -1,3 +1,2 @@
 class Affogato < BrewedCoffee
-  @milk = true
   @sweetner = honey
