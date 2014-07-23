@@ -30,6 +30,12 @@ module CLIntegracon
       spec_path + context.after_dir
     end
 
+    # @return [Pathname]
+    #         The concrete temp directory for this spec
+    def temp_path
+      context.temp_dir + spec_folder
+    end
+
     # Init a spec with a given context
     #
     # @param [FileTreeSpecContext] context
@@ -56,7 +62,7 @@ module CLIntegracon
 
       copy_files!
 
-      Dir.chdir(context.temp_dir + spec_folder) do
+      Dir.chdir(temp_path) do
         block.call self
       end
     end
@@ -80,7 +86,7 @@ module CLIntegracon
         expected = Pathname(expected_path)
         next unless expected.file?
 
-        produced = context.temp_dir + spec_folder + expected
+        produced = temp_path + expected
 
         diff = diff_files(expected, produced)
 
@@ -130,7 +136,7 @@ module CLIntegracon
       #
       def copy_files!
         source = before_path
-        destination = context.temp_dir + spec_folder
+        destination = temp_path
         if context.include_hidden_files?
           FileUtils.cp_r(source, destination)
         else
