@@ -58,7 +58,7 @@ module CLIntegracon
     #        with the test framework of your choice.
     #
     def run(&block)
-      context.prepare!
+      prepare!
 
       copy_files!
 
@@ -128,6 +128,15 @@ module CLIntegracon
 
     protected
 
+      # Prepare the temporary directory
+      #
+      def prepare!
+        context.prepare!
+
+        temp_path.rmtree if temp_path.exist?
+        temp_path.mkdir
+      end
+
       # Copies the before subdirectory of the given tests folder in the temporary
       # directory.
       #
@@ -137,12 +146,7 @@ module CLIntegracon
       def copy_files!
         source = before_path
         destination = temp_path
-        if context.include_hidden_files?
-          FileUtils.cp_r(source, destination)
-        else
-          destination.mkpath
-          FileUtils.cp_r(Dir.glob("#{source}/*"), destination)
-        end
+        FileUtils.cp_r(Dir.glob("#{source}/*", context.include_hidden_files? ? File::FNM_DOTMATCH : nil), destination)
       end
 
       # Searches recursively for all files and take care for including hidden files

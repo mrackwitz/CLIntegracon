@@ -162,7 +162,6 @@ module CLIntegracon
     # Prepare the temporary directory
     #
     def prepare!
-      temp_dir.rmtree if temp_dir.exist?
       temp_dir.mkpath
     end
 
