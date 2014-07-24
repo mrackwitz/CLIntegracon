@@ -29,7 +29,11 @@ begin
 
     desc 'Run the tasks for bacon integration spec verbose and without any outer expectations'
     task :bacon_integration_runner do
-      sh 'bundle exec bacon spec/bacon/spec_helper.rb'
+      sh [
+        'bundle exec bacon spec/bacon/spec_helper.rb',
+        'sed -e "s|$(echo $GEM_HOME)|\$GEM_HOME|g"',
+        'sed -e "s|$(dirname ~/.)|\$HOME|g"'
+      ].join " | "
     end
 
     desc 'Run all integration specs'
