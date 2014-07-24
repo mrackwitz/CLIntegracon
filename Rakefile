@@ -16,7 +16,7 @@ begin
     desc 'Run the bacon integration spec'
     task :bacon_integration => [:prepare] do
       verbose false
-      sh 'rake spec:bacon_integration_runner > tmp/bacon_execution_output.txt'
+      sh 'rake spec:bacon_integration_runner > tmp/bacon_execution_output.txt' do; end
       puts 'Run bacon spec …'
       sh 'diff spec/bacon/execution_output.txt tmp/bacon_execution_output.txt' do |ok, res|
         if ok
