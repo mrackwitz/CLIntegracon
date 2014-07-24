@@ -3,23 +3,70 @@ CLIntegracon::Adapter::Bacon
     Brew recipes
       without milk
         - $ coffee-maker --no-milk
-        - Affogato.brewed-coffee
         - BlackEye.brewed-coffee
         - CaPheSuaDa.brewed-coffee
         - Coffeemakerfile.yml
         - execution_output.txt
         - RedTux.brewed-coffee
-        - should not produce unexpected files
+        - should not produce unexpected files [FAILED]
       with honey as sweetner
         - $ coffee-maker --sweetner=honey
-        - Affogato.brewed-coffee
+        - Affogato.brewed-coffee [FAILED]
+        - BlackEye.brewed-coffee [FAILED]
         - Coffeemakerfile.yml
         - execution_output.txt
-        - RedTux.brewed-coffee
+        - RedTux.brewed-coffee [FAILED]
         - should not produce unexpected files
     Get help
       - $ coffee-maker --help
       - execution_output.txt
       - should not produce unexpected files
 
-17 specifications (28 requirements), 0 failures, 0 errors
+Bacon::Error: Unexpected files for coffeemaker_no_milk:
+  * [32mAffogato.brewed-coffee[0m
+	./spec/bacon/spec_helper.rb:45
+	./spec/bacon/spec_helper.rb:44
+	./spec/bacon/spec_helper.rb:42
+	./spec/bacon/spec_helper.rb:17
+	./spec/bacon/spec_helper.rb:15
+	$GEM_HOME/bin/ruby_executable_hooks:15
+
+Bacon::Error: File comparison error `Affogato.brewed-coffee` for coffeemaker_sweetner_honey:
+--- DIFF -----------------------------------------------------------------------
+ class Affogato < BrewedCoffee
+[32m+  @milk = true[0m
+   @sweetner = honey
+--- END ------------------------------------------------------------------------
+
+	./spec/bacon/spec_helper.rb:49
+	./spec/bacon/spec_helper.rb:48
+	./spec/bacon/spec_helper.rb:42
+	./spec/bacon/spec_helper.rb:17
+	./spec/bacon/spec_helper.rb:15
+	$GEM_HOME/bin/ruby_executable_hooks:15
+
+Bacon::Error: Missing file for coffeemaker_sweetner_honey:
+  * [31mBlackEye.brewed-coffee[0m
+	./spec/bacon/spec_helper.rb:49
+	./spec/bacon/spec_helper.rb:48
+	./spec/bacon/spec_helper.rb:42
+	./spec/bacon/spec_helper.rb:17
+	./spec/bacon/spec_helper.rb:15
+	$GEM_HOME/bin/ruby_executable_hooks:15
+
+Bacon::Error: File comparison error `RedTux.brewed-coffee` for coffeemaker_sweetner_honey:
+--- DIFF -----------------------------------------------------------------------
+ class RedTux < BrewedCoffee
+[31m-  @sweetner = sugar[0m
+[32m+  @milk = true[0m
+[32m+  @sweetner = honey[0m
+--- END ------------------------------------------------------------------------
+
+	./spec/bacon/spec_helper.rb:49
+	./spec/bacon/spec_helper.rb:48
+	./spec/bacon/spec_helper.rb:42
+	./spec/bacon/spec_helper.rb:17
+	./spec/bacon/spec_helper.rb:15
+	$GEM_HOME/bin/ruby_executable_hooks:15
+
+17 specifications (27 requirements), 4 failures, 0 errors
