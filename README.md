@@ -77,20 +77,20 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 
   ```ruby
   # Ensure that all the helpers are included in this context
-  describe_cli 'bundle' do
+  describe_cli 'coffee-maker' do
 
       subject do
         # Setup our subject and provide a display name, and the real command line
-        CLIntegracon::Subject.new('bundle', 'bundle exec bundle').tap do |subject|
+        CLIntegracon::Subject.new('coffee-maker', "bundle exec ruby spec/fixtures/bin/coffeemaker.rb").tap do |subject|
           # Set environments variables needed on execution
           subject.environment_vars = {
-              #'BUNDLE_GEMFILE' => 'Jewelfile'
+              'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml'
           }
 
           # Define default arguments
           subject.default_args = [
               '--verbose',
-              '--no-color'
+              '--no-ansi'
           ]
 
           # Replace special paths in execution output by a placeholder, so that the
@@ -102,20 +102,20 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 
       context do
         # Ignore certain files ...
-        ignores '**/.git/**'
+        ignores '.gitkeep'
 
         # ... or explicitly ignore all hidden files. (While the default is that they
         # are included in the file tree diff.)
-        include_hidden_files = false
+        include_hidden_files = true
       end
 
-      describe 'gem' do
+      describe 'Brew recipes' do
 
-        describe 'Create a simple gem, suitable for development with bundler' do
+        describe 'without milk' do
           # +behaves_like+ is provided by bacon.
           # +cli_spec+ expects as first argument the directory of the spec, and
           # as second argument the arguments passed to the subject on launch.
-          behaves_like cli_spec('gem', 'gem Test')
+          behaves_like cli_spec('coffeemaker_no_milk', '--no-milk')
 
           # Implementation details:
           # +cli_spec+ will define on-the-fly a new shared set of expectations
@@ -123,9 +123,16 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
           # will be immediately executed.
         end
 
+        describe 'with honey as sweetner' do
+          behaves_like cli_spec('coffeemaker_sweetner_honey', '--sweetner=honey')
+        end
+
       end
 
-    end
+      describe 'Get help' do
+        behaves_like cli_spec('coffeemaker_help', '--help')
+      end
+
   end
   ```
 
