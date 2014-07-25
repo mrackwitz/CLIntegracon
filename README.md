@@ -129,6 +129,10 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
   end
   ```
 
+4. Profit
+
+  ![Bacon Example Terminal Output](/../assets/term-output-bacon.png?raw=true)
+
 
 ## Contributing
 
