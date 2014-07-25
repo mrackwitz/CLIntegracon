@@ -22,6 +22,14 @@ module CLIntegracon
 
   class Configuration
 
+    # Get the subject to configure it
+    #
+    # @return [Subject]
+    #
+    def subject
+      @subject ||= Subject.new()
+    end
+
     # Get the context to configure it
     #
     # @return [FileTreeSpecContext]
