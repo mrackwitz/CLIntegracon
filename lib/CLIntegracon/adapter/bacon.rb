@@ -54,9 +54,7 @@ module CLIntegracon::Adapter::Bacon
     # Ad-hoc defines a set of shared expectations to be consumed directly by `behaves_like`.
     # See the following example for usage:
     #
-    #   behaves_like cli_spec('my_spec_dir') do
-    #     subject.launch()
-    #   end
+    #   behaves_like cli_spec('my_spec_dir', 'install --verbose')
     #
     # @note    This expects that a method `context` is defined, which is returning an
     #          instance of {FileTreeSpecContext}.
