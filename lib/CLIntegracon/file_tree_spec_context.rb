@@ -27,7 +27,7 @@ module CLIntegracon
     #
     # @note   **Attention**: This path will been deleted before running to ensure a clean sandbox for testing.
     #
-    attr_accessor :temp_dir
+    attr_accessor :temp_path
 
     # @return [Hash<String,Block>]
     #         the special paths of files, which need to be transformed in a better comparable form
@@ -54,11 +54,11 @@ module CLIntegracon
     #        :spec_dir    => see self.spec_dir
     #        :before_dir  => see self.before_dir
     #        :after_dir   => see self.after_dir
-    #        :temp_dir    => see self.temp_dir
+    #        :temp_path   => see self.temp_path
     #
     def initialize(properties={})
       self.spec_dir    = properties[:spec_dir]    || '.'
-      self.temp_dir    = properties[:temp_dir]    || 'tmp'
+      self.temp_path   = properties[:temp_path]   || 'tmp'
       self.before_dir  = properties[:before_dir]  || 'before'
       self.after_dir   = properties[:after_dir]   || 'after'
       self.transform_paths = {}
@@ -89,11 +89,11 @@ module CLIntegracon
       @spec_dir = Pathname(spec_dir).realpath
     end
 
-    def temp_dir=(temp_dir)
+    def temp_path=(temp_path)
       # Temp dir, doesn't have to exist itself, it will been created, but let's ensure
       # that at least the last but one path component exist.
-      raise "temp_dir's parent directory doesn't exist" unless (Pathname(temp_dir) + '..').exist?
-      @temp_dir = Pathname(temp_dir).realpath
+      raise "temp_path's parent directory doesn't exist" unless (Pathname(temp_path) + '..').exist?
+      @temp_path = Pathname(temp_path).realpath
     end
 
     def before_dir=(before_dir)
@@ -162,7 +162,7 @@ module CLIntegracon
     # Prepare the temporary directory
     #
     def prepare!
-      temp_dir.mkpath
+      temp_path.mkpath
     end
 
     # Get a specific spec with given folder to run it

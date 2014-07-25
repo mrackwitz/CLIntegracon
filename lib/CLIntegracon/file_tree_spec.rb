@@ -33,7 +33,7 @@ module CLIntegracon
     # @return [Pathname]
     #         The concrete temp directory for this spec
     def temp_path
-      context.temp_dir + spec_folder
+      context.temp_path + spec_folder
     end
 
     # Init a spec with a given context

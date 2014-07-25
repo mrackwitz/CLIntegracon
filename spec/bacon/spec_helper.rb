@@ -6,7 +6,7 @@ BIN  = ROOT + 'spec/fixtures/bin'
 
 CLIntegracon.configure do |c|
   c.context.spec_dir = ROOT + 'spec/integration'
-  c.context.temp_dir = ROOT + 'tmp/bacon_specs'
+  c.context.temp_path = ROOT + 'tmp/bacon_specs'
 
   c.hook_into :bacon
 end
