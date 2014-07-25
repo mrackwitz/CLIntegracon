@@ -46,7 +46,7 @@ module CLIntegracon
     # @param [String] executable
     #        The executable subject statement (optional)
     #
-    def initialize(name, executable=nil)
+    def initialize(name='subject', executable=nil)
       self.name = name
       self.executable = executable || name
       self.environment_vars = {}
