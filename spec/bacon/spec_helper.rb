@@ -16,25 +16,25 @@ describe CLIntegracon::Adapter::Bacon do
 
   describe_cli 'coffee-maker' do
 
-    subject do
-      CLIntegracon::Subject.new('coffee-maker', "bundle exec ruby #{BIN}/coffeemaker.rb").tap do |subject|
-        subject.environment_vars = {
-            'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml'
-        }
-        subject.default_args = [
-            '--verbose',
-            '--no-ansi'
-        ]
-        subject.has_special_path ROOT.to_s, 'ROOT'
-        subject.has_special_path `bundle show claide`.rstrip, 'CLAIDE_SRC'
-      end
+    subject do |s|
+      s.name = 'coffee-maker'
+      s.executable = "bundle exec ruby #{BIN}/coffeemaker.rb"
+      s.environment_vars = {
+          'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml'
+      }
+      s.default_args = [
+          '--verbose',
+          '--no-ansi'
+      ]
+      s.has_special_path ROOT.to_s, 'ROOT'
+      s.has_special_path `bundle show claide`.rstrip, 'CLAIDE_SRC'
     end
 
-    context do
-      ignores '.DS_Store'
-      ignores '.gitkeep'
+    context do |c|
+      c.ignores '.DS_Store'
+      c.ignores '.gitkeep'
 
-      has_special_handling_for 'execution_output.txt' do |path|
+      c.has_special_handling_for 'execution_output.txt' do |path|
         File.read(path).gsub(/:in `<main>'$/, '') # workaround different stack trace format by ruby-1.8.7
       end
     end

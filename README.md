@@ -79,34 +79,38 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
   # Ensure that all the helpers are included in this context
   describe_cli 'coffee-maker' do
 
-    subject do
-      # Setup our subject and provide a display name, and the real command line
-      CLIntegracon::Subject.new('coffee-maker', "bundle exec ruby spec/fixtures/bin/coffeemaker.rb").tap do |subject|
-        # Set environments variables needed on execution
-        subject.environment_vars = {
-            'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml'
-        }
+    # Setup our subject
+    subject do |s|
+      # Provide a display name (optional, default would be 'subject')
+      s.name = 'coffee-maker'
 
-        # Define default arguments
-        subject.default_args = [
-            '--verbose',
-            '--no-ansi'
-        ]
+      # Provide the real command line (required)
+      s.executable = 'bundle exec ruby spec/fixtures/bin/coffeemaker.rb"'
 
-        # Replace special paths in execution output by a placeholder, so that the
-        # compared outputs doesn't differ dependent on the absolute location where
-        # your tested CLI was executed.
-        subject.has_special_path ROOT.to_s, 'ROOT'
-      end
+      # Set environments variables needed on execution
+      s.environment_vars = {
+          'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml'
+      }
+
+      # Define default arguments
+      s.default_args = [
+          '--verbose',
+          '--no-ansi'
+      ]
+
+      # Replace special paths in execution output by a placeholder, so that the
+      # compared outputs doesn't differ dependent on the absolute location where
+      # your tested CLI was executed.
+      s.has_special_path ROOT.to_s, 'ROOT'
     end
 
-    context do
+    context do |c|
       # Ignore certain files ...
-      ignores '.gitkeep'
+      c.ignores '.gitkeep'
 
       # ... or explicitly ignore all hidden files. (While the default is that they
       # are included in the file tree diff.)
-      include_hidden_files = true
+      c.include_hidden_files = true
     end
 
     describe 'Brew recipes' do

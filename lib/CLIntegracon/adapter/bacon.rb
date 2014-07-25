@@ -10,25 +10,32 @@ end
 module CLIntegracon::Adapter::Bacon
   module Context
 
-    # Get or set the subject
+    # Get or configure the current subject
     #
-    # @param  [Block<() -> Subject>]
-    #         this block, if given, will be evaluated on current value for
-    #         subject or it is not set on the current context itself.
-    #         the return value will be set as subject.
+    # @note On first call this will create a new subject on base of the
+    #       shared configuration and store it in the ivar `@subject`.
+    #
+    # @param  [Block<(Subject) -> ()>]
+    #         This block, if given, will be evaluated on the caller.
+    #         It receives as first argument the subject itself.
     #
     # @return [Subject]
     #         the subject
     #
     def subject &block
+      @subject ||= CLIntegracon::shared_config.subject.dup
       return @subject if block.nil?
-      @subject = (@subject || self).instance_eval &block
+      instance_exec(@subject, &block)
     end
 
     # Get or configure the current context
     #
-    # @param  [Block<() -> ()>]
-    #         this block, if given, will be evaluated on the current context.
+    # @note On first call this will create a new context on base of the
+    #       shared configuration and store it in the ivar `@context`.
+    #
+    # @param  [Block<(FileTreeSpecContext) -> ()>]
+    #         This block, if given, will be evaluated on the caller.
+    #         It receives as first argument the context itself.
     #
     # @return [FileTreeSpecContext]
     #         the spec context, will be lazily created if not already present.
@@ -36,7 +43,7 @@ module CLIntegracon::Adapter::Bacon
     def context &block
       @context ||= CLIntegracon.shared_config.context.dup
       return @context if block.nil?
-      @context.instance_eval &block
+      instance_exec(@context, &block)
     end
 
     # Works like `behaves_like`, but takes arguments for the shared example
@@ -187,8 +194,9 @@ module CLIntegracon::Adapter::Bacon
         end
       end
 
-      subject do
-        CLIntegracon::Subject.new(subject_name, context_options[:executable] || subject_name)
+      subject do |s|
+        s.name       = subject_name
+        s.executable = context_options[:executable] || subject_name
       end
 
       instance_eval &block
