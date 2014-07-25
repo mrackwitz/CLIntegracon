@@ -9,7 +9,7 @@ module CLIntegracon
 
     # @return [Pathname]
     #         The relative path to the integration specs
-    attr_accessor :spec_dir
+    attr_accessor :spec_path
 
     # @return [Pathname]
     #         The relative path from a concrete spec directory to the directory containing the input files,
@@ -51,13 +51,13 @@ module CLIntegracon
     #
     # @param [Hash<Symbol,String>] properties
     #        The configuration parameter (optional):
-    #        :spec_dir    => see self.spec_dir
+    #        :spec_path   => see self.spec_path
     #        :before_dir  => see self.before_dir
     #        :after_dir   => see self.after_dir
     #        :temp_path   => see self.temp_path
     #
     def initialize(properties={})
-      self.spec_dir    = properties[:spec_dir]    || '.'
+      self.spec_path   = properties[:spec_path]   || '.'
       self.temp_path   = properties[:temp_path]   || 'tmp'
       self.before_dir  = properties[:before_dir]  || 'before'
       self.after_dir   = properties[:after_dir]   || 'after'
@@ -84,9 +84,9 @@ module CLIntegracon
 
     # @!group Setter
 
-    def spec_dir=(spec_dir)
+    def spec_path=(spec_path)
       # Spec dir has to exist.
-      @spec_dir = Pathname(spec_dir).realpath
+      @spec_path= Pathname(spec_path).realpath
     end
 
     def temp_path=(temp_path)

@@ -15,7 +15,7 @@ module CLIntegracon
     # @return [Pathname]
     #         The concrete spec path
     def spec_path
-      context.spec_dir + spec_folder
+      context.spec_path + spec_folder
     end
 
     # @return [Pathname]
