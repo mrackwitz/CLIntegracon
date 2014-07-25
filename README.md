@@ -66,8 +66,8 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 
   ```ruby
   CLIntegracon.configure do |c|
-    c.context.spec_dir = Pathname(File.expand_path('../integration', __FILE__))
-    c.context.temp_dir = Pathname(File.expand_path('../tmp', __FILE__))
+    c.context.spec_dir = File.expand_path('../integration', __FILE__)
+    c.context.temp_dir = File.expand_path('../tmp', __FILE__)
 
     c.hook_into :bacon
   end
