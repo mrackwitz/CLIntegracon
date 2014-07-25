@@ -125,8 +125,7 @@ module CLIntegracon::Adapter::Bacon
               end
 
               description = []
-              description << "File comparison error `#{diff.expected}` for #{spec_dir}"
-              description << ""
+              description << "File comparison error `#{diff.expected}` for #{spec_dir}:"
               description << diff.pretty_print
 
               diff.produced.should.satisfy(description * "\n") do
