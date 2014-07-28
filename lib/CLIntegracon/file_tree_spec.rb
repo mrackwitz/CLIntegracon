@@ -146,7 +146,7 @@ module CLIntegracon
       def copy_files!
         source = before_path
         destination = temp_path
-        FileUtils.cp_r(Dir.glob("#{source}/*", context.include_hidden_files? ? File::FNM_DOTMATCH : nil), destination)
+        FileUtils.cp_r("#{source}/.", destination)
       end
 
       # Searches recursively for all files and take care for including hidden files
