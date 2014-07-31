@@ -94,15 +94,18 @@ module CLIntegracon
     #
     # @note: You can check by `$?.success?` if the execution succeeded.
     #
-    # @param [String] arguments
-    #        The arguments to pass to the executable
+    # @param  [String] head_arguments
+    #         The arguments to pass to the executable before the default arguments.
+    #
+    # @param  [String] tail_arguments
+    #         The arguments to pass to the executable after the default arguments.
     #
     # @return [String]
     #         The output, which is emitted while execution from the binary.
     #
-    def launch(arguments='')
+    def launch(head_arguments='', tail_arguments='')
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
-      args = "#{arguments} #{default_args.join(' ')}"
+      args = [head_arguments, default_args, tail_arguments].flatten.compact.select { |s| s.length > 0 }.join ' '
       command = "#{vars} #{executable} #{args} 2>&1"
 
       output = `#{command}`

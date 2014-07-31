@@ -75,12 +75,12 @@ module CLIntegracon::Adapter::Bacon
     # @return  [String]
     #          name of the set of shared expectations
     #
-    def cli_spec(spec_dir, args)
+    def cli_spec(spec_dir, *args)
       file_spec spec_dir do
-        output = subject.launch(args)
+        output = subject.launch(*args)
         status = $?
 
-        it "$ #{subject.name} #{args}" do
+        it "$ #{subject.name} #{args.join(' ')}" do
           status.should.satisfy("Binary failed\n\n#{output}") do
             status.success?
           end
