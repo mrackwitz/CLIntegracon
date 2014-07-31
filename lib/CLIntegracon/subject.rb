@@ -21,6 +21,7 @@ module CLIntegracon
     # @return [Array<String>]
     #         The arguments which will always passed to the executable on launch and
     #         should not been passed explicitly every time to the launch method.
+    #         Those are added behind the arguments given on +launch+.
     attr_accessor :default_args
 
     # @return [Hash<String,String>]
