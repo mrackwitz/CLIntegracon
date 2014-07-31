@@ -121,19 +121,11 @@ module CLIntegracon::Adapter::Bacon
 
           spec.compare do |diff|
             it diff.expected.to_s do
-              description = []
-              description << "Missing file for #{spec_dir}:"
-              description << "  * #{diff.expected.to_s.red}"
-
-              diff.produced.should.satisfy(description * "\n") do
+              diff.produced.should.satisfy(spec.formatter.describe_missing_file(diff.expected)) do
                 diff.produced.exist?
               end
 
-              description = []
-              description << "File comparison error `#{diff.expected}` for #{spec_dir}:"
-              description << diff.pretty_print
-
-              diff.produced.should.satisfy(description * "\n") do
+              diff.produced.should.satisfy(spec.formatter.describe_file_diff(diff)) do
                 diff.is_equal?
               end
             end
@@ -141,11 +133,7 @@ module CLIntegracon::Adapter::Bacon
 
           spec.check_unexpected_files do |files|
             it "should not produce unexpected files" do
-              description = []
-              description << "Unexpected files for #{spec_dir}:"
-              description += files.map { |f| "  * #{f.to_s.green}" }
-
-              files.should.satisfy(description * "\n") do
+              files.should.satisfy(spec.formatter.describe_unexpected_files(files)) do
                 files.size == 0
               end
             end

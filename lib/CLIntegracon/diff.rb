@@ -4,6 +4,7 @@ require 'diffy'
 
 module CLIntegracon
   class Diff
+    include Enumerable
 
     # @return [Pathname]
     #         the expected file
@@ -56,19 +57,16 @@ module CLIntegracon
       end
     end
 
-    def pretty_print(max_width=80)
-      description = []
-      description << "--- DIFF ".ljust(max_width, '-')
-      Diffy::Diff.new(prepared_expected.to_s, prepared_produced.to_s, :source => 'files', :context => 3).each do |line|
-        description << case line
-          when /^\+/ then line.green
-          when /^-/ then  line.red
-          else            line
-        end.gsub("\n",'')
-      end
-      description << "--- END ".ljust(max_width, '-')
-      description << ""
-      description * "\n"
+    # Enumerate all lines which differ.
+    #
+    # @param  [Hash] options
+    #         see Diffy#initialize for help.
+    #
+    # @return [Diffy::Diff]
+    #
+    def each(options = {}, &block)
+      options = { :source => 'files', :context => 3 }.merge options
+      Diffy::Diff.new(prepared_expected.to_s, prepared_produced.to_s, options).each &block
     end
 
   end

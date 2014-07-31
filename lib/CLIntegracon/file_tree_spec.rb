@@ -1,5 +1,6 @@
 require 'pathname'
 require 'CLIntegracon/diff'
+require 'CLIntegracon/formatter'
 
 module CLIntegracon
   class FileTreeSpec
@@ -124,6 +125,14 @@ module CLIntegracon
       unexpected_files.reject! { |path| special_behavior_for_path(path) == context.class.nop }
 
       block.call unexpected_files
+    end
+
+    # Return a Formatter
+    #
+    # @return [Formatter]
+    #
+    def formatter
+      @formatter ||= Formatter.new(self)
     end
 
     protected
