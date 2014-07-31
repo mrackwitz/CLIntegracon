@@ -99,7 +99,7 @@ module CLIntegracon
     # @return [String]
     #         The output, which is emitted while execution from the binary.
     #
-    def launch(arguments)
+    def launch(arguments='')
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
       args = "#{arguments} #{default_args.join(' ')}"
       command = "#{vars} #{executable} #{args} 2>&1"
