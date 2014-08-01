@@ -76,12 +76,7 @@ module CLIntegracon
     #        It will receive a Diff of each of the expected and produced files.
     #
     def compare(&diff_block)
-      self.context.transform_paths.each do |path, block|
-        Dir.glob(path) do |produced_path|
-          produced = Pathname(produced_path)
-          block.call(produced)
-        end
-      end
+      transform_paths!
 
       glob_all after_path do |expected_path|
         expected = Pathname(expected_path)
@@ -156,6 +151,17 @@ module CLIntegracon
         source = before_path
         destination = temp_path
         FileUtils.cp_r("#{source}/.", destination)
+      end
+
+      # Applies the in the context configured transformations.
+      #
+      def transform_paths!
+        context.transform_paths.each do |path, block|
+          Dir.glob(path) do |produced_path|
+            produced = Pathname(produced_path)
+            block.call(produced)
+          end
+        end
       end
 
       # Searches recursively for all files and take care for including hidden files
