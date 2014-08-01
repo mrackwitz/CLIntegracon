@@ -65,12 +65,97 @@ describe 'CLIntegracon::Adapter::Bacon' do
 
   describe 'Context' do
 
+    MockContext = Class.new do
+      include CLIntegracon::Adapter::Bacon::Context
+    end
+
+    before do
+      @context = MockContext.new
+    end
+
+
+    shared 'mutating accessor' do
+
+      before do
+        def call_accessor(&block)
+          @context.send(@method, &block)
+        end
+
+        def set_ivar(value)
+          @context.instance_variable_set("@#{@method.to_s}", value)
+        end
+
+        def get_ivar
+          @context.instance_variable_get("@#{@method.to_s}")
+        end
+      end
+
+      describe 'with block argument' do
+        it 'should call the given block' do
+          proc = Proc.new {}
+          proc.expects(:call).once
+          call_accessor { proc.call() }
+        end
+
+        it 'should pass it as parameter to the given block' do
+          mock = mock()
+          set_ivar(mock)
+          call_accessor do |arg|
+            arg.should.be.equal? mock
+          end
+        end
+
+        it 'should get and keep a new if ivar is empty' do
+          set_ivar(nil)
+          call_accessor {}
+          get_ivar.should.be.an.instance_of? @type
+        end
+
+        it 'should get a new by duplicating from shared context' do
+          CLIntegracon.shared_config.expects(@method).returns mock(:dup)
+          call_accessor
+        end
+
+        it 'should keep the existing if there is one' do
+          mock = mock()
+          set_ivar(mock)
+          call_accessor {}
+          get_ivar.should.be.equal? mock
+        end
+      end
+
+      describe 'with block argument' do
+        it 'should instantiate and keep a new if ivar is empty' do
+          set_ivar(nil)
+          call_accessor.should.be.an.instance_of? @type
+          get_ivar.should.be.an.instance_of? @type
+        end
+
+        it 'should return the existing if there is one' do
+          mock = mock()
+          set_ivar(mock)
+          call_accessor.should.be.equal? mock
+        end
+      end
+    end
+
+
     describe '#subject' do
-      # TODO
+      before do
+        @method = :subject
+        @type = CLIntegracon::Subject
+      end
+
+      behaves_like 'mutating accessor'
     end
 
     describe '#context' do
-      # TODO
+      before do
+        @method = :context
+        @type = CLIntegracon::FileTreeSpecContext
+      end
+
+      behaves_like 'mutating accessor'
     end
 
     describe '#file_spec' do
