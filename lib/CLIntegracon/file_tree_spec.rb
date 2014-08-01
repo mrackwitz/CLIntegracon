@@ -78,17 +78,15 @@ module CLIntegracon
     def compare(&diff_block)
       transform_paths!
 
-      glob_all(after_path).each do |expected|
+      glob_all(after_path).each do |relative_path|
+        expected = after_path + relative_path
+
         next unless expected.file?
 
-        produced = temp_path + expected
-
-        diff = diff_files(expected, produced)
-
-        block = special_behavior_for_path expected
-
+        block = special_behavior_for_path relative_path
         next if block == context.class.nop
 
+        diff = diff_files(expected, relative_path)
         diff.preparator = block unless block.nil?
 
         diff_block.call diff
@@ -200,14 +198,15 @@ module CLIntegracon
       # @param [Pathname] expected
       #        The file in the after directory
       #
-      # @param [Pathname] produced
+      # @param [Pathname] relative_path
       #        The file in the temp directory
       #
       # @return [Diff]
       #         An object holding a diff
       #
-      def diff_files(expected, produced)
-        Diff.new(expected, produced)
+      def diff_files(expected, relative_path)
+        produced = temp_path + relative_path
+        Diff.new(expected, produced, relative_path)
       end
 
   end

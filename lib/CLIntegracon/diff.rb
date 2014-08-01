@@ -14,6 +14,10 @@ module CLIntegracon
     #         the produced file
     attr_reader :produced
 
+    # @return [Pathname]
+    #         the relative path to the expected file
+    attr_reader :relative_path
+
     # @return [Proc<(Pathname)->(to_s)>]
     #         the proc, which transforms the files in a better comparable form
     attr_accessor :preparator
@@ -21,17 +25,21 @@ module CLIntegracon
     # Init a new diff
     #
     # @param [Pathname] expected
-    #        the expected file or string
+    #        the expected file
     #
     # @param [Pathname] produced
-    #        the produced file or string
+    #        the produced file
+    #
+    # @param [Pathname] relative_path
+    #        the relative path to the expected file
     #
     # @param [Block<(Pathname)->(to_s)>] preparator
     #        the block, which transforms the files in a better comparable form
     #
-    def initialize(expected, produced, &preparator)
+    def initialize(expected, produced, relative_path=nil, &preparator)
       @expected = expected
       @produced = produced
+      @relative_path = relative_path
       preparator ||= Proc.new { |x| x } #id
       self.preparator = preparator
     end

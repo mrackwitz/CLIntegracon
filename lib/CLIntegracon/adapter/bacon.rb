@@ -120,8 +120,8 @@ module CLIntegracon::Adapter::Bacon
           instance_eval &block
 
           spec.compare do |diff|
-            it diff.expected.to_s do
-              diff.produced.should.satisfy(spec.formatter.describe_missing_file(diff.expected)) do
+            it diff.relative_path.to_s do
+              diff.produced.should.satisfy(spec.formatter.describe_missing_file(diff.relative_path)) do
                 diff.produced.exist?
               end
 

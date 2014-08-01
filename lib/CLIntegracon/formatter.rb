@@ -59,7 +59,7 @@ module CLIntegracon
     #
     def describe_file_diff(diff, max_width=80)
       description = []
-      description << "File comparison error `#{diff.expected}` for #{spec.spec_folder}:"
+      description << "File comparison error `#{diff.relative_path}` for #{spec.spec_folder}:"
       description << "--- DIFF ".ljust(max_width, '-')
       description += diff.map do |line|
         case line
