@@ -78,8 +78,7 @@ module CLIntegracon
     def compare(&diff_block)
       transform_paths!
 
-      glob_all after_path do |expected_path|
-        expected = Pathname(expected_path)
+      glob_all(after_path).each do |expected|
         next unless expected.file?
 
         produced = temp_path + expected
@@ -113,7 +112,6 @@ module CLIntegracon
       unexpected_files = produced_files - expected_files
 
       # Select only files
-      unexpected_files.map! { |path| Pathname(path) }
       unexpected_files.reject! { |path| !path.file? }
 
       # Filter ignored paths
@@ -167,12 +165,13 @@ module CLIntegracon
       # @param [String] path
       #        The relative or absolute path to search in (optional)
       #
-      # @param [Block<(String)->()>] block
-      #        The block to iterate all the files (optional)
+      # @return [Array<Pathname>]
       #
-      def glob_all(path=nil, &block)
+      def glob_all(path=nil)
         Dir.chdir path || '.' do
-          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0, &block)
+          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).map { |path|
+            Pathname(path)
+          }
         end
       end
 
