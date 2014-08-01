@@ -182,7 +182,7 @@ module CLIntegracon
       def special_behavior_for_path(path)
         context.special_paths.each do |key, block|
           matched = if key.is_a?(Regexp)
-            path.match(key)
+            path.to_s.match(key)
           else
             File.fnmatch(key, path)
           end
