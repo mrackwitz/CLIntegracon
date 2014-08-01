@@ -144,9 +144,6 @@ module CLIntegracon
       # Copies the before subdirectory of the given tests folder in the temporary
       # directory.
       #
-      # @param [String] folder
-      #        The name of the folder of the tests
-      #
       def copy_files!
         source = before_path
         destination = temp_path
