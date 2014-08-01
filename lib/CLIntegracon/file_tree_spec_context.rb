@@ -147,11 +147,11 @@ module CLIntegracon
     # Copies the before subdirectory of the given tests folder in the temporary
     # directory.
     #
-    # @param  [String] file_path
+    # @param  [String|RegExp...] file_path
     #         the file path of the files, which were changed and need special comparison
     #
-    def ignores(file_path)
-      self.special_paths[file_path] = self.class.nop
+    def ignores(*file_path)
+      has_special_handling_for *file_path, &self.class.nop
     end
 
 
