@@ -119,6 +119,10 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
         # +behaves_like+ is provided by bacon.
         # +cli_spec+ expects as first argument the directory of the spec, and
         # as second argument the arguments passed to the subject on launch.
+        # The defined default arguments will be appended after that.
+        # If you need to append arguments after the default arguments, because
+        # of the way your command line interface is defined and how its option
+        # parser works, you can pass them as third argument to +cli_spec+.
         behaves_like cli_spec('coffeemaker_no_milk', '--no-milk')
 
         # Implementation details:
