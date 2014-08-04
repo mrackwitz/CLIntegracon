@@ -22,7 +22,7 @@ begin
         if ok
           puts '✓ Spec for bacon passed.'.green
         else
-          puts '✗ Spec for bacon failed.'.red
+          fail '✗ Spec for bacon failed.'.red
         end
       end
     end
@@ -31,8 +31,11 @@ begin
     task :bacon_integration_runner do
       sh [
         'bundle exec bacon spec/bacon/spec_helper.rb',
-        'sed -e "s|$(echo $GEM_HOME)|\$GEM_HOME|g"',
-        'sed -e "s|$(dirname ~/.)|\$HOME|g"'
+        'sed -e "s|$(dirname ~/.)|\$HOME|g"',
+        # Keep exception formatting of different ruby versions clean and compatible
+        'sed -E "s|^([[:space:]])./|\1|g"',
+        'sed -e "s|:in \`.*\'$||g"',
+        'awk "!/\/bin\/ruby_executable_hooks/"'
       ].join " | "
     end
 
@@ -42,7 +45,7 @@ begin
     ]
 
     desc 'Run all unit specs'
-    task :unit do
+    task :unit => [:prepare] do
       sh "bundle exec bacon #{specs('unit/**/*')}"
     end
 

@@ -167,7 +167,7 @@ module CLIntegracon
       #
       def glob_all(path=nil)
         Dir.chdir path || '.' do
-          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).map { |path|
+          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).sort.map { |path|
             Pathname(path)
           }
         end

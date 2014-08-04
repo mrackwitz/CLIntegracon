@@ -6,16 +6,16 @@ CLIntegracon::Adapter::Bacon
         - BlackEye.brewed-coffee
         - CaPheSuaDa.brewed-coffee
         - Coffeemakerfile.yml
-        - execution_output.txt
         - RedTux.brewed-coffee
+        - execution_output.txt
         - should not produce unexpected files [FAILED]
       with honey as sweetner
         - $ coffee-maker --sweetner=honey
         - Affogato.brewed-coffee [FAILED]
         - BlackEye.brewed-coffee [FAILED]
         - Coffeemakerfile.yml
-        - execution_output.txt
         - RedTux.brewed-coffee [FAILED]
+        - execution_output.txt
         - should not produce unexpected files
     Get help
       - $ coffee-maker --help
@@ -24,12 +24,11 @@ CLIntegracon::Adapter::Bacon
 
 Bacon::Error: Unexpected files for coffeemaker_no_milk:
   * [32mAffogato.brewed-coffee[0m
-	./spec/bacon/spec_helper.rb:45
-	./spec/bacon/spec_helper.rb:44
-	./spec/bacon/spec_helper.rb:42
-	./spec/bacon/spec_helper.rb:17
-	./spec/bacon/spec_helper.rb:15
-	$GEM_HOME/bin/ruby_executable_hooks:15
+	spec/bacon/spec_helper.rb:45
+	spec/bacon/spec_helper.rb:44
+	spec/bacon/spec_helper.rb:42
+	spec/bacon/spec_helper.rb:17
+	spec/bacon/spec_helper.rb:15
 
 Bacon::Error: File comparison error `Affogato.brewed-coffee` for coffeemaker_sweetner_honey:
 --- DIFF -----------------------------------------------------------------------
@@ -38,21 +37,19 @@ Bacon::Error: File comparison error `Affogato.brewed-coffee` for coffeemaker_swe
    @sweetner = honey
 --- END ------------------------------------------------------------------------
 
-	./spec/bacon/spec_helper.rb:49
-	./spec/bacon/spec_helper.rb:48
-	./spec/bacon/spec_helper.rb:42
-	./spec/bacon/spec_helper.rb:17
-	./spec/bacon/spec_helper.rb:15
-	$GEM_HOME/bin/ruby_executable_hooks:15
+	spec/bacon/spec_helper.rb:49
+	spec/bacon/spec_helper.rb:48
+	spec/bacon/spec_helper.rb:42
+	spec/bacon/spec_helper.rb:17
+	spec/bacon/spec_helper.rb:15
 
 Bacon::Error: Missing file for coffeemaker_sweetner_honey:
   * [31mBlackEye.brewed-coffee[0m
-	./spec/bacon/spec_helper.rb:49
-	./spec/bacon/spec_helper.rb:48
-	./spec/bacon/spec_helper.rb:42
-	./spec/bacon/spec_helper.rb:17
-	./spec/bacon/spec_helper.rb:15
-	$GEM_HOME/bin/ruby_executable_hooks:15
+	spec/bacon/spec_helper.rb:49
+	spec/bacon/spec_helper.rb:48
+	spec/bacon/spec_helper.rb:42
+	spec/bacon/spec_helper.rb:17
+	spec/bacon/spec_helper.rb:15
 
 Bacon::Error: File comparison error `RedTux.brewed-coffee` for coffeemaker_sweetner_honey:
 --- DIFF -----------------------------------------------------------------------
@@ -62,11 +59,10 @@ Bacon::Error: File comparison error `RedTux.brewed-coffee` for coffeemaker_sweet
 [32m+  @sweetner = honey[0m
 --- END ------------------------------------------------------------------------
 
-	./spec/bacon/spec_helper.rb:49
-	./spec/bacon/spec_helper.rb:48
-	./spec/bacon/spec_helper.rb:42
-	./spec/bacon/spec_helper.rb:17
-	./spec/bacon/spec_helper.rb:15
-	$GEM_HOME/bin/ruby_executable_hooks:15
+	spec/bacon/spec_helper.rb:49
+	spec/bacon/spec_helper.rb:48
+	spec/bacon/spec_helper.rb:42
+	spec/bacon/spec_helper.rb:17
+	spec/bacon/spec_helper.rb:15
 
 17 specifications (27 requirements), 4 failures, 0 errors
