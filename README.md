@@ -2,7 +2,6 @@
 
 [![Gem](https://img.shields.io/gem/v/clintegracon.svg?style=flat)](http://rubygems.org/gems/clintegracon)
 [![Build Status](https://img.shields.io/travis/mrackwitz/CLIntegracon/master.svg?style=flat)](https://travis-ci.org/mrackwitz/CLIntegracon)
-[![Coverage](https://img.shields.io/codeclimate/coverage/github/mrackwitz/CLIntegracon.svg?style=flat)](https://codeclimate.com/github/mrackwitz/CLIntegracon)
 [![Code Climate](https://img.shields.io/codeclimate/github/mrackwitz/CLIntegracon.svg?style=flat)](https://codeclimate.com/github/mrackwitz/CLIntegracon)
 
 CLIntegracon allows you to build *Integration* specs for your *CLI*,
