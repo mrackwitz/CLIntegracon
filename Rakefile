@@ -42,7 +42,7 @@ begin
     ]
 
     desc 'Run all unit specs'
-    task :unit do
+    task :unit => [:prepare] do
       sh "bundle exec bacon #{specs('unit/**/*')}"
     end
 
