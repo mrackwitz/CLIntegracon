@@ -93,7 +93,7 @@ module CLIntegracon
       # Temp dir, doesn't have to exist itself, it will been created, but let's ensure
       # that at least the last but one path component exist.
       raise "temp_path's parent directory doesn't exist" unless (Pathname(temp_path) + '..').exist?
-      @temp_path = Pathname(temp_path).realpath
+      @temp_path = Pathname(temp_path)
     end
 
     def before_dir=(before_dir)
@@ -159,10 +159,11 @@ module CLIntegracon
 
     # @!group Interaction
 
-    # Prepare the temporary directory
+    # Prepare the temporary directory and the attribute #temp_path itself.
     #
     def prepare!
       temp_path.mkpath
+      @temp_path = temp_path.realpath
     end
 
     # Get a specific spec with given folder to run it
