@@ -22,7 +22,7 @@ begin
         if ok
           puts '✓ Spec for bacon passed.'.green
         else
-          puts '✗ Spec for bacon failed.'.red
+          fail '✗ Spec for bacon failed.'.red
         end
       end
     end
