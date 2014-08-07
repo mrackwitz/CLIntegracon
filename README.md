@@ -100,7 +100,7 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
       # Replace special paths in execution output by a placeholder, so that the
       # compared outputs doesn't differ dependent on the absolute location where
       # your tested CLI was executed.
-      s.has_special_path ROOT.to_s, 'ROOT'
+      s.replace_path ROOT.to_s, 'ROOT'
     end
 
     context do |c|
