@@ -85,7 +85,7 @@ module CLIntegracon
     # @param [String] name
     #        The name of the path, or the basename of the given path
     #
-    def has_special_user_path(path, name=nil)
+    def replace_user_path(path, name=nil)
       self.replace_path %r[/Users/.*/#{path.to_s}], name
     end
 
