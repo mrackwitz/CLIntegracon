@@ -29,7 +29,7 @@ module CLIntegracon
     #         which are not printed relative to the project, when the subject will
     #         be executed. These are e.g. paths were side-effects occur, like manipulation
     #         of user configurations in dot files or caching-specific directories.
-    attr_accessor :special_paths
+    attr_accessor :replace_paths
 
     # @return [String]
     #         The path where the output of the executable will be written to.
@@ -53,7 +53,7 @@ module CLIntegracon
       self.executable = executable || name
       self.environment_vars = {}
       self.default_args = []
-      self.special_paths = {}
+      self.replace_paths = {}
       self.output_path = 'execution_output.txt'
     end
 
@@ -73,7 +73,7 @@ module CLIntegracon
     #
     def replace_path(path, name=nil)
       name ||= File.basename path
-      self.special_paths[name] = path
+      self.replace_paths[name] = path
     end
 
     # Define a path in the user directory, whose occurrences in the output
@@ -117,7 +117,7 @@ module CLIntegracon
         file.write command.sub(executable, name)
         file.write "\n"
 
-        special_paths.each do |key, path|
+        replace_paths.each do |key, path|
           output.gsub!(path, key)
         end
 
