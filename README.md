@@ -103,6 +103,8 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
       s.replace_path ROOT.to_s, 'ROOT'
     end
 
+    # Setup our FileTreeSpecContext, which is tied to the Bacon::Context,
+    # which we define here, in the block passed to describe_cli.
     context do |c|
       # Ignore certain files ...
       c.ignores '.gitkeep'
