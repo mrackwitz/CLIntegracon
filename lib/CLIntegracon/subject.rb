@@ -25,8 +25,9 @@ module CLIntegracon
     attr_accessor :default_args
 
     # @return [Hash<String,String>]
-    #         The special paths, which are not relative to the project, when the statement
-    #         will be executed. These are paths were side-effects occur, like manipulation
+    #         The replace paths, whose keys are expected to occur in the output,
+    #         which are not printed relative to the project, when the subject will
+    #         be executed. These are e.g. paths were side-effects occur, like manipulation
     #         of user configurations in dot files or caching-specific directories.
     attr_accessor :special_paths
 
@@ -61,7 +62,8 @@ module CLIntegracon
 
     # @!group DSL-like Setter
 
-    # Define a path in the user directory as special path
+    # Define a path, whose occurrences in the output should been replaced by
+    # either its basename or a given placeholder.
     #
     # @param [String] path
     #        The path
@@ -74,7 +76,8 @@ module CLIntegracon
       self.special_paths[name] = path
     end
 
-    # Define a path in the user directory as special path
+    # Define a path in the user directory, whose occurrences in the output
+    # should been replaced by either its basename or a given placeholder.
     #
     # @param [String] path
     #        The path
