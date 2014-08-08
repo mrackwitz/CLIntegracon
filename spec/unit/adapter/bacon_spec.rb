@@ -111,7 +111,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
           get_ivar.should.be.an.instance_of? @type
         end
 
-        it 'should get a new by duplicating from shared context' do
+        it 'should get a new by duplicating from shared config' do
           CLIntegracon.shared_config.expects(@method).returns mock(:dup)
           call_accessor
         end
