@@ -28,10 +28,10 @@ module CLIntegracon::Adapter::Bacon
       instance_exec(@subject, &block)
     end
 
-    # Get or configure the current context
+    # Get or configure the current context for FileTreeSpecs
     #
     # @note On first call this will create a new context on base of the
-    #       shared configuration and store it in the ivar `@context`.
+    #       shared configuration and store it in the ivar `@file_tree_spec_context`.
     #
     # @param  [Block<(FileTreeSpecContext) -> ()>]
     #         This block, if given, will be evaluated on the caller.
@@ -40,10 +40,10 @@ module CLIntegracon::Adapter::Bacon
     # @return [FileTreeSpecContext]
     #         the spec context, will be lazily created if not already present.
     #
-    def context &block
-      @context ||= CLIntegracon.shared_config.context.dup
-      return @context if block.nil?
-      instance_exec(@context, &block)
+    def file_tree_spec_context &block
+      @file_tree_spec_context ||= CLIntegracon.shared_config.file_tree_spec_context.dup
+      return @file_tree_spec_context if block.nil?
+      instance_exec(@file_tree_spec_context, &block)
     end
 
     # Works like `behaves_like`, but takes arguments for the shared example
@@ -63,8 +63,8 @@ module CLIntegracon::Adapter::Bacon
     #
     #   behaves_like cli_spec('my_spec_dir', 'install --verbose')
     #
-    # @note    This expects that a method `context` is defined, which is returning an
-    #          instance of {FileTreeSpecContext}.
+    # @note    This expects that a method `file_tree_spec_context` is defined, which is
+    #          returning an instance of {FileTreeSpecContext}.
     #
     # @param   [String] spec_dir
     #          the concrete directory of the spec, see {file_spec}.
@@ -95,8 +95,8 @@ module CLIntegracon::Adapter::Bacon
     #     # do some changes to the current dir
     #   end
     #
-    # @note    This expects that a method `context` is defined, which is returning an
-    #          instance of {FileTreeSpecContext}.
+    # @note    This expects that a method `file_tree_spec_context` is defined, which is
+    #          returning an instance of {FileTreeSpecContext}.
     #
     # @param   [String] spec_dir
     #          the concrete directory of the spec to be passed to
@@ -116,7 +116,7 @@ module CLIntegracon::Adapter::Bacon
       shared_name = spec_dir
 
       shared shared_name do
-        context.spec(spec_dir).run do |spec|
+        file_tree_spec_context.spec(spec_dir).run do |spec|
           instance_eval &block
 
           spec.compare do |diff|
@@ -148,7 +148,7 @@ module CLIntegracon::Adapter::Bacon
 
   # Describe a command line interface
   # This method basically behaves like {Bacon::Context.describe}, but it provides
-  # automatically the methods #subject, #context, #cli_spec and #file_spec.
+  # automatically the methods #subject, #file_tree_spec_context, #cli_spec and #file_spec.
   #
   # @param  [String] subject_name
   #         the subject name will be used as first argument to initialize

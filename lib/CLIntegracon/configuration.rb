@@ -34,8 +34,8 @@ module CLIntegracon
     #
     # @return [FileTreeSpecContext]
     #
-    def context
-      @context ||= FileTreeSpecContext.new()
+    def file_tree_spec_context
+      @file_tree_spec_context ||= FileTreeSpecContext.new()
     end
 
     # Hook this gem in a test framework by a supported adapter

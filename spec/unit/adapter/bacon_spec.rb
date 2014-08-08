@@ -33,7 +33,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
 
       it 'can access to methods defined in CLIntegracon::Adapter::Bacon::Context' do
         @context.should.respond_to? :subject
-        @context.should.respond_to? :context
+        @context.should.respond_to? :file_tree_spec_context
         @context.should.respond_to? :cli_spec
         @context.should.respond_to? :file_spec
       end
@@ -149,9 +149,9 @@ describe 'CLIntegracon::Adapter::Bacon' do
       behaves_like 'mutating accessor'
     end
 
-    describe '#context' do
+    describe '#file_tree_spec_context' do
       before do
-        @method = :context
+        @method = :file_tree_spec_context
         @type = CLIntegracon::FileTreeSpecContext
       end
 
@@ -175,7 +175,7 @@ describe 'CLIntegracon::Adapter::Bacon' do
 
       it 'executes the FileTreeSpecContext' do
         describe_cli 'git' do
-          context.expects(:spec).once.returns mock(:run => true)
+          file_tree_spec_context.expects(:spec).once.returns mock(:run => true)
           behaves_like file_spec('git')
         end
       end

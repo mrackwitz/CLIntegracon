@@ -65,8 +65,8 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 
   ```ruby
   CLIntegracon.configure do |c|
-    c.context.spec_path = File.expand_path('../integration', __FILE__)
-    c.context.temp_path = File.expand_path('../../tmp', __FILE__)
+    c.file_tree_spec_context.spec_path = File.expand_path('../integration', __FILE__)
+    c.file_tree_spec_context.temp_path = File.expand_path('../../tmp', __FILE__)
 
     c.hook_into :bacon
   end
@@ -105,7 +105,7 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 
     # Setup our FileTreeSpecContext, which is tied to the Bacon::Context,
     # which we define here, in the block passed to describe_cli.
-    context do |c|
+    file_tree_spec_context do |c|
       # Ignore certain files ...
       c.ignores '.gitkeep'
 

@@ -5,8 +5,8 @@ ROOT = Pathname.new(File.expand_path('../../../', __FILE__))
 BIN  = ROOT + 'spec/fixtures/bin'
 
 CLIntegracon.configure do |c|
-  c.context.spec_path = ROOT + 'spec/integration'
-  c.context.temp_path = ROOT + 'tmp/bacon_specs'
+  c.file_tree_spec_context.spec_path = ROOT + 'spec/integration'
+  c.file_tree_spec_context.temp_path = ROOT + 'tmp/bacon_specs'
 
   c.hook_into :bacon
 end
@@ -30,7 +30,7 @@ describe CLIntegracon::Adapter::Bacon do
       s.replace_path `bundle show claide`.rstrip, 'CLAIDE_SRC'
     end
 
-    context do |c|
+    file_tree_spec_context do |c|
       c.ignores '.DS_Store'
       c.ignores '.gitkeep'
 
