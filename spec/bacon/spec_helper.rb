@@ -5,8 +5,8 @@ ROOT = Pathname.new(File.expand_path('../../../', __FILE__))
 BIN  = ROOT + 'spec/fixtures/bin'
 
 CLIntegracon.configure do |c|
-  c.file_tree_spec_context.spec_path = ROOT + 'spec/integration'
-  c.file_tree_spec_context.temp_path = ROOT + 'tmp/bacon_specs'
+  c.spec_path = ROOT + 'spec/integration'
+  c.temp_path = ROOT + 'tmp/bacon_specs'
 
   c.hook_into :bacon
 end

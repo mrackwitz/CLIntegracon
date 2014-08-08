@@ -38,6 +38,26 @@ module CLIntegracon
       @file_tree_spec_context ||= FileTreeSpecContext.new()
     end
 
+    # Delegate missing methods to #file_tree_spec_context
+    #
+    def method_missing(method, *args, &block)
+      if file_tree_spec_context.respond_to?(method)
+        file_tree_spec_context.send(method, *args, &block)
+      else
+        super
+      end
+    end
+
+    # Take care of delegation to #file_tree_spec_context
+    #
+    def respond_to?(method)
+      if file_tree_spec_context.respond_to?(method)
+        true
+      else
+        super
+      end
+    end
+
     # Hook this gem in a test framework by a supported adapter
     #
     # @param  [Symbol] test_framework
