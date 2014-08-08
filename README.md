@@ -65,8 +65,15 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 
   ```ruby
   CLIntegracon.configure do |c|
-    c.file_tree_spec_context.spec_path = File.expand_path('../integration', __FILE__)
-    c.file_tree_spec_context.temp_path = File.expand_path('../../tmp', __FILE__)
+    c.spec_path = File.expand_path('../integration', __FILE__)
+    c.temp_path = File.expand_path('../../tmp', __FILE__)
+
+    # Ignore certain files ...
+    c.ignores '.gitkeep'
+
+    # ... or explicitly ignore all hidden files. (While the default is that they
+    # are included in the file tree diff.)
+    c.include_hidden_files = true
 
     c.hook_into :bacon
   end
@@ -101,17 +108,6 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
       # compared outputs doesn't differ dependent on the absolute location where
       # your tested CLI was executed.
       s.replace_path ROOT.to_s, 'ROOT'
-    end
-
-    # Setup our FileTreeSpecContext, which is tied to the Bacon::Context,
-    # which we define here, in the block passed to describe_cli.
-    file_tree_spec_context do |c|
-      # Ignore certain files ...
-      c.ignores '.gitkeep'
-
-      # ... or explicitly ignore all hidden files. (While the default is that they
-      # are included in the file tree diff.)
-      c.include_hidden_files = true
     end
 
     describe 'Brew recipes' do
