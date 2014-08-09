@@ -119,13 +119,15 @@ module CLIntegracon::Adapter::Bacon
         file_tree_spec_context.spec(spec_dir).run do |spec|
           instance_eval &block
 
+          formatter = spec.formatter
+
           spec.compare do |diff|
             it diff.relative_path.to_s do
-              diff.produced.should.satisfy(spec.formatter.describe_missing_file(diff.relative_path)) do
+              diff.produced.should.satisfy(formatter.describe_missing_file(diff.relative_path)) do
                 diff.produced.exist?
               end
 
-              diff.produced.should.satisfy(spec.formatter.describe_file_diff(diff)) do
+              diff.produced.should.satisfy(formatter.describe_file_diff(diff)) do
                 diff.is_equal?
               end
             end
@@ -133,7 +135,7 @@ module CLIntegracon::Adapter::Bacon
 
           spec.check_unexpected_files do |files|
             it "should not produce unexpected files" do
-              files.should.satisfy(spec.formatter.describe_unexpected_files(files)) do
+              files.should.satisfy(formatter.describe_unexpected_files(files)) do
                 files.size == 0
               end
             end
