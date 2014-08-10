@@ -68,7 +68,7 @@ module CLIntegracon
     # @return [Bool]
     #
     def respond_to?(method)
-      if /^describe_/.match(method) && @formatter.respond_to?(method)
+      if /^describe_/.match(method.to_s) && @formatter.respond_to?(method)
         true
       else
         super

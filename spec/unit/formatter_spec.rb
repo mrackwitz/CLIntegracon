@@ -7,7 +7,7 @@ describe CLIntegracon::Formatter do
   end
 
   before do
-    @spec = stub('Spec', spec_folder: '$spec_folder')
+    @spec = stub('Spec', :spec_folder => '$spec_folder')
   end
 
   describe "#initialize" do
@@ -54,7 +54,7 @@ EOS
     describe "#describe_file_diff" do
       it 'should match the expected return value' do
         diff = ['$before', '+ $add', '- $removed', '$after']
-        diff.stubs(relative_path: '$relative_path')
+        diff.stubs(:relative_path => '$relative_path')
         @formatter.describe_file_diff(diff, 20).to_s.should.be.eql? <<-EOS
 File comparison error `$relative_path` for $spec_folder:
 --- DIFF -----------
@@ -99,7 +99,7 @@ EOS
     describe '#describe_missing_file' do
       it 'should not call the method immediately' do
         @formatter.expects(:describe_missing_file).never
-        @formatter.lazy.describe_missing_file('a')
+        @formatter.lazy.describe_missing_file('a') \
           .should.be.an.instance_of?(CLIntegracon::LazyString)
       end
     end
@@ -107,7 +107,7 @@ EOS
     describe "#describe_unexpected_files" do
       it 'should not call the method immediately' do
         @formatter.expects(:describe_unexpected_files).never
-        @formatter.lazy.describe_unexpected_files(['a', 'b'])
+        @formatter.lazy.describe_unexpected_files(['a', 'b']) \
           .should.be.an.instance_of?(CLIntegracon::LazyString)
       end
     end
@@ -115,7 +115,7 @@ EOS
     describe "#describe_file_diff" do
       it 'should not call the method immediately' do
         @formatter.expects(:describe_missing_file).never
-        @formatter.lazy.describe_file_diff(stub('Diff'))
+        @formatter.lazy.describe_file_diff(stub('Diff')) \
           .should.be.an.instance_of?(CLIntegracon::LazyString)
       end
     end
