@@ -146,6 +146,14 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
   ![Bacon Example Terminal Output](/../assets/term-output-bacon.png?raw=true)
 
 
+## Acknowledgement
+
+This gem was inspired by the idea behind the integration tests of the
+[CocoaPods](cp-main)'s main project and was integrated there.  
+See [the integration in CocoaPods][cp-integration] for a real-world example with
+very extensive usage of all features.
+
+
 ## Contributing
 
 1. Fork it
@@ -153,3 +161,6 @@ This is not fixed, but if yours differ, you have to change paths accordingly.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+[cp-main]: https://github.com/CocoaPods/CocoaPods
+[cp-integration]: https://github.com/CocoaPods/CocoaPods/blob/master/spec/integration.rb
