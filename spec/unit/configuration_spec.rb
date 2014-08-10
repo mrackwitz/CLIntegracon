@@ -1,5 +1,4 @@
-require 'CLIntegracon'
-require 'mocha-on-bacon'
+require File.expand_path('../spec_helper', __FILE__)
 
 describe CLIntegracon do
 
