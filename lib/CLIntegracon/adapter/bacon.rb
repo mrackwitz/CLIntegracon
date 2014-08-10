@@ -119,7 +119,7 @@ module CLIntegracon::Adapter::Bacon
         file_tree_spec_context.spec(spec_dir).run do |spec|
           instance_eval &block
 
-          formatter = spec.formatter
+          formatter = spec.formatter.lazy
 
           spec.compare do |diff|
             it diff.relative_path.to_s do

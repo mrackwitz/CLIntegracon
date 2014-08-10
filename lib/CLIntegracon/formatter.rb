@@ -1,6 +1,82 @@
 require 'colored'
 
 module CLIntegracon
+
+  # A LazyString is constructed by a block, but only evaluated when needed
+  class LazyString
+
+    # @return  [Proc]
+    #          the closure which will be used to build the string
+    attr_reader :proc
+
+    # Initialize a LazyString
+    #
+    # @param  [Block () -> (String)] block
+    #         the block which returns a string, called by #to_s
+    #
+    def initialize(&block)
+      @proc = block
+    end
+
+    # Calls the underlying proc to build the string. The result will be
+    # memorized, so subsequent calls of this method will not cause that the
+    # proc will be called again.
+    #
+    # @return [String]
+    #
+    def to_str
+      @string ||= proc.call().to_s
+    end
+
+    alias :to_s :to_str
+
+  end
+
+  # A LazyStringProxy returns a LazyString for each call, which delegates the
+  # call as soon as the result is needed to the underlying formatter.
+  class LazyStringProxy
+
+    # @return  [Formatter]
+    #          the formatter used to build the string
+    attr_reader :formatter
+
+    # Initialize a LazyStringProxy, which returns for each call to an
+    # underlying formatter a new LazyString, whose #to_s method will evaluate
+    # to the result of the original call delegated to the formatter.
+    #
+    # @param  [Formatter] formatter
+    #         the formatter
+    #
+    def initialize(formatter)
+      @formatter = formatter
+    end
+
+    # Remember the call delegated to #formatter in a closure on an anonymous
+    # object, defined as method :to_s.
+    #
+    # @return [#to_s]
+    #
+    def method_missing(method, *args, &block)
+      return LazyString.new do
+        @formatter.send(method, *args, &block)
+      end
+    end
+
+    # Respond to all methods, which are beginning with `describe_` to
+    # which the #formatter also responds.
+    #
+    # @return [Bool]
+    #
+    def respond_to?(method)
+      if /^describe_/.match(method) && @formatter.respond_to?(method)
+        true
+      else
+        super
+      end
+    end
+
+  end
+
   class Formatter
 
     # @return  [FileTreeSpec]
@@ -15,6 +91,15 @@ module CLIntegracon
     def initialize(spec)
       super()
       @spec = spec
+    end
+
+    # Return a proxy, which returns formatted string, evaluated first
+    # if #to_s is called on this instance.
+    #
+    # @return  [LazyStringProxy]
+    #
+    def lazy
+      LazyStringProxy.new(self)
     end
 
     # Return a description text for an expectation that a file path
