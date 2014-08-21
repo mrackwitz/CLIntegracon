@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mocha", "~> 1.0.0"   # Ruby 1.8.7
   spec.add_development_dependency "mocha-on-bacon"
   spec.add_development_dependency "claide"              # Example CLI
+  spec.add_development_dependency "inch"
 
   spec.add_runtime_dependency 'colored', '~> 1.2'
   spec.add_runtime_dependency 'diffy'
