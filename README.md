@@ -3,6 +3,7 @@
 [![Gem](https://img.shields.io/gem/v/clintegracon.svg?style=flat)](http://rubygems.org/gems/clintegracon)
 [![Build Status](https://img.shields.io/travis/mrackwitz/CLIntegracon/master.svg?style=flat)](https://travis-ci.org/mrackwitz/CLIntegracon)
 [![Code Climate](https://img.shields.io/codeclimate/github/mrackwitz/CLIntegracon.svg?style=flat)](https://codeclimate.com/github/mrackwitz/CLIntegracon)
+[![Dependency Status](http://img.shields.io/gemnasium/mrackwitz/CLIntegracon.svg?style=flat)](https://gemnasium.com/mrackwitz/CLIntegracon)
 
 CLIntegracon allows you to build *Integration* specs for your *CLI*,
 independent if they are based on Ruby or another technology.
