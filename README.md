@@ -9,6 +9,8 @@ independent if they are based on Ruby or another technology.
 It is especially useful if your command modifies the file system.
 Furthermore it provides an integration for *Bacon*.
 
+Take a look in the [documentation](http://www.rubydoc.info/github/mrackwitz/CLIntegracon/master/frames).
+
 
 ## Installation
 
