@@ -93,7 +93,7 @@ module CLIntegracon
 
     # @!group Interaction
 
-    # Runs the executable with the given arguments in the temporary directory.
+    # Runs the executable with the given arguments.
     #
     # @note: You can check by `$?.success?` if the execution succeeded.
     #
@@ -104,7 +104,7 @@ module CLIntegracon
     #         The arguments to pass to the executable after the default arguments.
     #
     # @return [String]
-    #         The output, which is emitted while execution from the binary.
+    #         The output, which is emitted while execution.
     #
     def launch(head_arguments='', tail_arguments='')
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
