@@ -113,6 +113,26 @@ module CLIntegracon
 
       output = `#{command}`
 
+      write_output(command, output)
+
+      output
+    end
+
+    #-----------------------------------------------------------------------------#
+
+    # @!group Helpers
+
+    protected
+
+    # Saves the output in a file called #output_path, relative to current dir.
+    #
+    # @param  [String] command
+    #         The executed command line.
+    #
+    # @param  [String] output
+    #         The output, which was emitted while execution.
+    #
+    def write_output(command, output)
       File.open(output_path, 'w') do |file|
         file.write command.sub(executable, name)
         file.write "\n"
@@ -123,8 +143,6 @@ module CLIntegracon
 
         file.write output
       end
-
-      output
     end
 
   end
