@@ -108,10 +108,8 @@ module CLIntegracon
     #
     def launch(head_arguments='', tail_arguments='')
       vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
-      args = [head_arguments, default_args, tail_arguments].flatten.compact.select { |s| s.length > 0 }.join ' '
-      command = "#{vars} #{executable} #{args} 2>&1"
 
-      output = `#{command}`
+      output = `#{vars} #{command_line(head_arguments, tail_arguments)} 2>&1`
 
       write_output(command, output)
 
@@ -123,6 +121,23 @@ module CLIntegracon
     # @!group Helpers
 
     protected
+
+    # Merges the given with the configured arguments and returns the command
+    # line to execute.
+    #
+    # @param  [String] head_arguments
+    #         The arguments to pass to the executable before the default arguments.
+    #
+    # @param  [String] tail_arguments
+    #         The arguments to pass to the executable after the default arguments.
+    #
+    # @return [String]
+    #         The command line to execute.
+    #
+    def command_line(head_arguments='', tail_arguments='')
+      args = [head_arguments, default_args, tail_arguments].flatten.compact.select { |s| s.length > 0 }.join ' '
+      "#{executable} #{args}"
+    end
 
     # Saves the output in a file called #output_path, relative to current dir.
     #
