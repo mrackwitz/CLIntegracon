@@ -107,12 +107,9 @@ module CLIntegracon
     #         The output, which is emitted while execution.
     #
     def launch(head_arguments='', tail_arguments='')
-      vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
-
-      output = `#{vars} #{command_line(head_arguments, tail_arguments)} 2>&1`
-
+      command = command_line(head_arguments, tail_arguments)
+      output = run(command)
       write_output(command, output)
-
       output
     end
 
@@ -121,6 +118,19 @@ module CLIntegracon
     # @!group Helpers
 
     protected
+
+    # Run the command.
+    #
+    # @param  [String] command_line
+    #         THe command line to execute
+    #
+    # @return [String]
+    #         The output, which is emitted while execution.
+    #
+    def run(command_line)
+      vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
+      `#{vars} #{command_line} 2>&1`
+    end
 
     # Merges the given with the configured arguments and returns the command
     # line to execute.
