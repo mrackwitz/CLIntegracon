@@ -27,16 +27,11 @@ describe CLIntegracon::Adapter::Bacon do
           '--no-ansi'
       ]
       s.replace_path ROOT.to_s, 'ROOT'
-      s.replace_path `bundle show claide`.rstrip, 'CLAIDE_SRC'
     end
 
     file_tree_spec_context do |c|
       c.ignores '.DS_Store'
       c.ignores '.gitkeep'
-
-      c.has_special_handling_for 'execution_output.txt' do |path|
-        File.read(path).gsub(/:in `<main>'$/, '') # workaround different stack trace format by ruby-1.8.7
-      end
     end
 
     describe 'Brew recipes' do
