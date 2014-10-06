@@ -9,11 +9,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     bacon (1.2.0)
-    claide (0.6.1)
+    claide (0.7.0)
     coderay (1.1.0)
     colored (1.2)
-    diffy (3.0.5)
-    inch (0.4.10)
+    diffy (3.0.6)
+    inch (0.5.0)
       pry
       sparkr (>= 0.2.0)
       term-ansicolor
@@ -33,7 +33,7 @@ GEM
     sparkr (0.4.1)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    tins (1.3.2)
+    tins (1.3.3)
     yard (0.8.7.4)
 
 PLATFORMS
