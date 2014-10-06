@@ -1,1 +1,2 @@
 class CaPheSuaDa < BrewedCoffee
+  @origin = "Việt Nam"

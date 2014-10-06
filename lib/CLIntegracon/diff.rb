@@ -52,13 +52,22 @@ module CLIntegracon
       @prepared_produced ||= preparator.call(produced)
     end
 
+    # Check if the prepared inputs are files or need to be dumped first to
+    # temporary files to be compared.
+    #
+    # @return [Bool]
+    #
+    def compares_files?
+      prepared_expected.is_a? Pathname
+    end
+
     # Check if the produced output equals the expected
     #
     # @return [Bool]
     #         whether the expected is equal to the produced
     #
     def is_equal?
-      @is_equal ||= if prepared_expected.is_a? Pathname
+      @is_equal ||= if compares_files?
         FileUtils.compare_file(prepared_expected, prepared_produced)
       else
         prepared_expected == prepared_produced
@@ -73,7 +82,10 @@ module CLIntegracon
     # @return [Diffy::Diff]
     #
     def each(options = {}, &block)
-      options = { :source => 'files', :context => 3 }.merge options
+      options = {
+        :source  => compares_files? ? 'files' : 'strings',
+        :context => 3
+      }.merge options
       Diffy::Diff.new(prepared_expected.to_s, prepared_produced.to_s, options).each &block
     end
 
