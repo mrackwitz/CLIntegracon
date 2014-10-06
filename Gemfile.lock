@@ -1,0 +1,50 @@
+PATH
+  remote: .
+  specs:
+    clintegracon (0.5.2)
+      colored (~> 1.2)
+      diffy
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bacon (1.2.0)
+    claide (0.6.1)
+    coderay (1.1.0)
+    colored (1.2)
+    diffy (3.0.5)
+    inch (0.4.10)
+      pry
+      sparkr (>= 0.2.0)
+      term-ansicolor
+      yard (~> 0.8.7)
+    metaclass (0.0.4)
+    method_source (0.8.2)
+    mocha (1.0.0)
+      metaclass (~> 0.0.1)
+    mocha-on-bacon (0.2.2)
+      mocha (>= 0.13.0)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    rake (10.1.1)
+    slop (3.6.0)
+    sparkr (0.4.1)
+    term-ansicolor (1.3.0)
+      tins (~> 1.0)
+    tins (1.3.2)
+    yard (0.8.7.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bacon
+  bundler (~> 1.3)
+  claide
+  clintegracon!
+  inch
+  mocha (~> 1.0.0)
+  mocha-on-bacon
+  rake (~> 10.1.0)
