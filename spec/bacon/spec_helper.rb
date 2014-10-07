@@ -32,6 +32,10 @@ describe CLIntegracon::Adapter::Bacon do
     file_tree_spec_context do |c|
       c.ignores '.DS_Store'
       c.ignores '.gitkeep'
+
+      c.has_special_handling_for 'CaPheSuaDa.brewed-coffee' do |path|
+        File.read(path)
+      end
     end
 
     describe 'Brew recipes' do
