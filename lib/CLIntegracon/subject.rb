@@ -196,7 +196,8 @@ module CLIntegracon
     #
     def write_output(command, output)
       File.open(output_path, 'w') do |file|
-        file.write command.sub(executable, name)
+        printable_command = "#{environment_var_assignments} #{command} 2>&1"
+        file.write printable_command.sub(executable, name)
         file.write "\n"
         file.write output
       end
