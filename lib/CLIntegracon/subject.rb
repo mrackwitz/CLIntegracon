@@ -122,7 +122,7 @@ module CLIntegracon
     #
     def launch(head_arguments='', tail_arguments='')
       command = command_line(head_arguments, tail_arguments)
-      output = run(command)
+      output = apply_replacements(run(command))
       write_output(command, output)
       output
     end
@@ -163,6 +163,21 @@ module CLIntegracon
       "#{executable} #{args}"
     end
 
+    # Apply the configured replacements to the output.
+    #
+    # @param  [String] output
+    #         The output, which was emitted while execution.
+    #
+    # @return [String]
+    #         The redacted output.
+    #
+    def apply_replacements(output)
+      replace_patterns.each do |key, path|
+        output = output.gsub(path, key)
+      end
+      output
+    end
+
     # Saves the output in a file called #output_path, relative to current dir.
     #
     # @param  [String] command
@@ -175,11 +190,6 @@ module CLIntegracon
       File.open(output_path, 'w') do |file|
         file.write command.sub(executable, name)
         file.write "\n"
-
-        replace_patterns.each do |key, path|
-          output.gsub!(path, key)
-        end
-
         file.write output
       end
     end
