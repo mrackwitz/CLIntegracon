@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mocha-on-bacon"
   spec.add_development_dependency "claide"              # Example CLI
   spec.add_development_dependency "inch"
+  spec.add_development_dependency 'activesupport', '>= 3.1'
 
   spec.add_runtime_dependency 'colored', '~> 1.2'
   spec.add_runtime_dependency 'diffy'
