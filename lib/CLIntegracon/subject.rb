@@ -24,12 +24,12 @@ module CLIntegracon
     #         Those are added behind the arguments given on +launch+.
     attr_accessor :default_args
 
-    # @return [Hash<String,String>]
-    #         The replace paths, whose keys are expected to occur in the output,
-    #         which are not printed relative to the project, when the subject will
-    #         be executed. These are e.g. paths were side-effects occur, like manipulation
-    #         of user configurations in dot files or caching-specific directories.
-    attr_accessor :replace_paths
+    # @return [Hash<String|Regexp,String>]
+    #         The replace patterns, whose keys are expected to occur in the output,
+    #         which should been redacted, when the subject will be executed. These are
+    #         e.g. paths were side-effects occur, like manipulation of user configurations
+    #         in dot files or caching-specific directories or just dates and times.
+    attr_accessor :replace_patterns
 
     # @return [String]
     #         The path where the output of the executable will be written to.
@@ -53,7 +53,7 @@ module CLIntegracon
       self.executable = executable || name
       self.environment_vars = {}
       self.default_args = []
-      self.replace_paths = {}
+      self.replace_patterns = {}
       self.output_path = 'execution_output.txt'
     end
 
@@ -61,6 +61,19 @@ module CLIntegracon
     #-----------------------------------------------------------------------------#
 
     # @!group DSL-like Setter
+
+    # Define a pattern, whose occurrences in the output should been replaced a
+    # given placeholder.
+    #
+    # @param [Regexp|String] pattern
+    #        The pattern
+    #
+    # @param [String] replacement
+    #        The replacement
+    #
+    def replace_pattern(pattern, replacement)
+      self.replace_patterns[replacement] = pattern
+    end
 
     # Define a path, whose occurrences in the output should been replaced by
     # either its basename or a given placeholder.
@@ -73,7 +86,7 @@ module CLIntegracon
     #
     def replace_path(path, name=nil)
       name ||= File.basename path
-      self.replace_paths[name] = path
+      self.replace_pattern path, name
     end
 
     # Define a path in the user directory, whose occurrences in the output
@@ -163,7 +176,7 @@ module CLIntegracon
         file.write command.sub(executable, name)
         file.write "\n"
 
-        replace_paths.each do |key, path|
+        replace_patterns.each do |key, path|
           output.gsub!(path, key)
         end
 
