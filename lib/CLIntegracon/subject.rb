@@ -133,6 +133,15 @@ module CLIntegracon
 
     protected
 
+    # Serializes configured environment variables
+    #
+    # @return [String]
+    #         Serialized assignment of configured environment variables.
+    #
+    def environment_var_assignments
+      environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
+    end
+
     # Run the command.
     #
     # @param  [String] command_line
@@ -142,8 +151,7 @@ module CLIntegracon
     #         The output, which is emitted while execution.
     #
     def run(command_line)
-      vars = environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
-      `#{vars} #{command_line} 2>&1`
+      `#{environment_var_assignments} #{command_line} 2>&1`
     end
 
     # Merges the given with the configured arguments and returns the command
