@@ -83,9 +83,10 @@ module CLIntegracon
     #        The path
     #
     # @param [String] name
-    #        The name of the path, or the basename of the given path
+    #        The name of the path, or the given path
     #
     def replace_user_path(path, name=nil)
+      name ||= "$HOME/#{path}"
       self.replace_path %r[/Users/.*/#{path.to_s}], name
     end
 
