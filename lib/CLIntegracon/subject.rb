@@ -26,7 +26,7 @@ module CLIntegracon
 
     # @return [Hash<String|Regexp,String>]
     #         The replace patterns, whose keys are expected to occur in the output,
-    #         which should been redacted, when the subject will be executed. These are
+    #         which should be redacted, when the subject will be executed. These are
     #         e.g. paths were side-effects occur, like manipulation of user configurations
     #         in dot files or caching-specific directories or just dates and times.
     attr_accessor :replace_patterns
@@ -62,7 +62,7 @@ module CLIntegracon
 
     # @!group DSL-like Setter
 
-    # Define a pattern, whose occurrences in the output should been replaced a
+    # Define a pattern, whose occurrences in the output should be replaced by a
     # given placeholder.
     #
     # @param [Regexp|String] pattern
@@ -75,7 +75,7 @@ module CLIntegracon
       self.replace_patterns[replacement] = pattern
     end
 
-    # Define a path, whose occurrences in the output should been replaced by
+    # Define a path, whose occurrences in the output should be replaced by
     # either its basename or a given placeholder.
     #
     # @param [String] path
@@ -90,7 +90,7 @@ module CLIntegracon
     end
 
     # Define a path in the user directory, whose occurrences in the output
-    # should been replaced by either its basename or a given placeholder.
+    # should be replaced by either its basename or a given placeholder.
     #
     # @param [String] path
     #        The path
