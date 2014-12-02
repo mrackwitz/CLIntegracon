@@ -139,7 +139,7 @@ module CLIntegracon
     #         Serialized assignment of configured environment variables.
     #
     def environment_var_assignments
-      environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
+      environment_vars.keys.sort.map { |key| "#{key}=#{environment_vars[key]}" }.join ' '
     end
 
     # Run the command.
