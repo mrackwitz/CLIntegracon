@@ -1,4 +1,4 @@
-COFFEE_MAKER_FILE=Coffeemakerfile.yml coffee-maker --help --verbose --no-ansi 2>&1
+COFFEE_MAKER_FILE=Coffeemakerfile.yml PROJECT_DIR=ROOT bundle exec ruby ROOT/spec/fixtures/bin/coffeemaker.rb --help --verbose --no-ansi 2>&1
 Usage:
 
     $ coffee-maker

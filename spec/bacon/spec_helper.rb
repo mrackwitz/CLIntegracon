@@ -20,7 +20,8 @@ describe CLIntegracon::Adapter::Bacon do
       s.name = 'coffee-maker'
       s.executable = "bundle exec ruby #{BIN}/coffeemaker.rb"
       s.environment_vars = {
-          'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml'
+          'COFFEE_MAKER_FILE' => 'Coffeemakerfile.yml',
+          'PROJECT_DIR'       => ROOT,
       }
       s.default_args = [
           '--verbose',

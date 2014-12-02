@@ -139,7 +139,7 @@ module CLIntegracon
     #         Serialized assignment of configured environment variables.
     #
     def environment_var_assignments
-      environment_vars.map { |key,value| "#{key}=#{value}" }.join ' '
+      environment_vars.keys.sort.map { |key| "#{key}=#{environment_vars[key]}" }.join ' '
     end
 
     # Run the command.
@@ -196,7 +196,7 @@ module CLIntegracon
     #
     def write_output(command, output)
       File.open(output_path, 'w') do |file|
-        printable_command = "#{environment_var_assignments} #{command} 2>&1"
+        printable_command = apply_replacements("#{environment_var_assignments} #{command} 2>&1")
         file.write printable_command.sub(executable, name)
         file.write "\n"
         file.write output
