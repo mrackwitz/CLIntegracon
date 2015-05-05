@@ -177,5 +177,31 @@ module CLIntegracon
       FileTreeSpec.new(self, spec_folder)
     end
 
+    #-----------------------------------------------------------------------------#
+
+    private
+
+    # @!group Helpers
+
+    # Select elements in an enumerable which match the given path.
+    #
+    # @param  [Enumerable<String|RegExp>] patterns
+    #         The patterns to check
+    #
+    # @param  [Pathname] path
+    #         The file to match
+    #
+    # @return [Enumerable<String|RegExp>]
+    #
+    def select_matching_file_patterns(patterns, path)
+      patterns.select do |pattern|
+        if pattern.is_a?(Regexp)
+          path.to_s.match(pattern)
+        else
+          File.fnmatch(pattern, path)
+        end
+      end
+    end
+
   end
 end
