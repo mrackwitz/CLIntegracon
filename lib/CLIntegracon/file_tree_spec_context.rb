@@ -30,11 +30,11 @@ module CLIntegracon
     attr_accessor :temp_path
 
     # @return [Hash<String,Block>]
-    #         the special paths of files, which need to be transformed in a better comparable form
+    #         the paths of files, which need to be transformed in a better comparable form
     attr_accessor :transform_paths
 
     # @return [Hash<String,Block>]
-    #         the special paths of files, where an individual file diff handling is needed
+    #         the paths of files, where an individual file diff handling is needed
     attr_accessor :special_paths
 
     # @return [Bool]
