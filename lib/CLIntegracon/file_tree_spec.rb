@@ -82,9 +82,9 @@ module CLIntegracon
         expected = after_path + relative_path
 
         next unless expected.file?
+        next if context.ignores?(relative_path)
 
         block = special_behavior_for_path relative_path
-        next if block == context.class.nop
 
         diff = diff_files(expected, relative_path, &block)
 
@@ -112,7 +112,7 @@ module CLIntegracon
       unexpected_files.select! { |path| path.file? }
 
       # Filter ignored paths
-      unexpected_files.reject! { |path| special_behavior_for_path(path) == context.class.nop }
+      unexpected_files.reject! { |path| context.ignores?(path) }
 
       block.call unexpected_files
     end

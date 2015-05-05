@@ -37,6 +37,10 @@ module CLIntegracon
     #         the paths of files, where an individual file diff handling is needed
     attr_accessor :special_paths
 
+    # @return [Array<String|Regexp>]
+    #         the paths of files to exclude from comparison
+    attr_accessor :ignore_paths
+
     # @return [Bool]
     #         whether to include hidden files, when searching directories (true by default)
     attr_accessor :include_hidden_files
@@ -63,20 +67,8 @@ module CLIntegracon
       self.after_dir   = properties[:after_dir]   || 'after'
       self.transform_paths = {}
       self.special_paths = {}
+      self.ignore_paths = []
       self.include_hidden_files = true
-    end
-
-
-    #-----------------------------------------------------------------------------#
-
-    # @!group Helper
-
-    # This value is used for ignored paths
-    #
-    # @return [Proc]
-    #         Does nothing
-    def self.nop
-      @nop ||= Proc.new {}
     end
 
 
@@ -151,7 +143,23 @@ module CLIntegracon
     #         the file path(s) of the files to exclude from comparison
     #
     def ignores(*file_paths)
-      has_special_handling_for *file_paths, &self.class.nop
+      self.ignore_paths += file_paths
+    end
+
+
+    #-----------------------------------------------------------------------------#
+
+    # @!group Path accessors
+
+    # Checks whether a given file path is to ignore.
+    #
+    # @param  [Pathname] file_path
+    #         The file path to match
+    #
+    # @return [Bool]
+    #
+    def ignores?(file_path)
+      !select_matching_file_patterns(ignore_paths, file_path).empty?
     end
 
 
