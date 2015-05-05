@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "bacon"
   spec.add_development_dependency "mocha-on-bacon"
-  spec.add_development_dependency "claide"              # Example CLI
+  spec.add_development_dependency "claide", "~> 0.8"    # Example CLI
   spec.add_development_dependency "inch"
   spec.add_development_dependency 'activesupport', '>= 3.1'
 
