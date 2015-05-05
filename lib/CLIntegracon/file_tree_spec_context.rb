@@ -33,7 +33,7 @@ module CLIntegracon
     #         the paths of files, which need to be transformed in a better comparable form
     attr_accessor :transform_paths
 
-    # @return [Hash<String,Block>]
+    # @return [Hash<String|Regexp,Block>]
     #         the paths of files, where an individual file diff handling is needed
     attr_accessor :preprocess_paths
 
@@ -120,18 +120,19 @@ module CLIntegracon
       end
     end
 
-    # Registers a block for special handling certain files, matched with globs.
+    # Registers a block to preprocess certain files, matched with globs or
+    # regular expressions.
     # Registered file paths will be excluded from default comparison by `diff`.
-    # Multiple special handlers can match a single file.
+    # A file is preprocessed with the first matching preprocessor.
     #
     # @param  [String|Regexp...] file_paths
-    #         The file path(s) of the files, which were created/changed and need special comparison
+    #         The path(s)s, where an individual file diff handling is needed
     #
     # @param  [Block<(Pathname) -> (String)>] block
     #         The block, which takes each of the matched files, transforms it if needed
     #         in a better comparable form.
     #
-    def has_special_handling_for(*file_paths, &block)
+    def preprocess(*file_paths, &block)
       file_paths.each do |file_path|
         self.preprocess_paths[file_path] = block
       end
