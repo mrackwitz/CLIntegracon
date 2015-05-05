@@ -69,18 +69,21 @@ module CLIntegracon::Adapter::Bacon
     # @param   [String] spec_dir
     #          the concrete directory of the spec, see {file_spec}.
     #
-    # @param   [String] args
-    #          the additional arguments to pass on launch to {CLIntegracon::Subject}.
+    # @param   [String] head_args
+    #          the arguments to pass before the +default_args+ on launch to {CLIntegracon::Subject}.
+    #
+    # @param   [String] tail_args
+    #          the arguments to pass after the +default_args+ on launch to {CLIntegracon::Subject}.
     #
     # @return  [String]
     #          name of the set of shared expectations
     #
-    def cli_spec(spec_dir, *args)
+    def cli_spec(spec_dir, head_args, tail_args)
       file_spec spec_dir do
-        output = subject.launch(*args)
+        output = subject.launch(head_args, tail_args)
         status = $?
 
-        it "$ #{subject.name} #{args.join(' ')}" do
+        it "$ #{subject.name} #{head_args} #{tail_args}" do
           status.should.satisfy("Binary failed\n\n#{output}") do
             status.success?
           end
