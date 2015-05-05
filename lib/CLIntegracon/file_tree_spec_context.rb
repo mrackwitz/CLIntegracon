@@ -148,7 +148,7 @@ module CLIntegracon
     # directory.
     #
     # @param  [String|RegExp...] file_path
-    #         the file path of the files, which were changed and need special comparison
+    #         the file path(s) of the files to exclude from comparison
     #
     def ignores(*file_path)
       has_special_handling_for *file_path, &self.class.nop
