@@ -86,8 +86,7 @@ module CLIntegracon
         block = special_behavior_for_path relative_path
         next if block == context.class.nop
 
-        diff = diff_files(expected, relative_path)
-        diff.preparator = block unless block.nil?
+        diff = diff_files(expected, relative_path, &block)
 
         diff_block.call diff
       end
@@ -201,12 +200,15 @@ module CLIntegracon
       # @param  [Pathname] relative_path
       #         The file in the temp directory
       #
+      # @param  [Block<(Pathname)->(to_s)>] block
+      #         the block, which transforms the files in a better comparable form
+      #
       # @return [Diff]
       #         An object holding a diff
       #
-      def diff_files(expected, relative_path)
+      def diff_files(expected, relative_path, &block)
         produced = temp_path + relative_path
-        Diff.new(expected, produced, relative_path)
+        Diff.new(expected, produced, relative_path, &block)
       end
 
   end
