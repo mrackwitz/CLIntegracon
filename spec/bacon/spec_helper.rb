@@ -34,7 +34,11 @@ describe CLIntegracon::Adapter::Bacon do
       c.ignores '.DS_Store'
       c.ignores '.gitkeep'
 
-      c.has_special_handling_for 'CaPheSuaDa.brewed-coffee' do |path|
+      c.transform_produced /\.brewed-coffee/ do |path|
+        FileUtils.touch("#{path}.decanted")
+      end
+
+      c.preprocess 'CaPheSuaDa.brewed-coffee' do |path|
         File.read(path)
       end
     end

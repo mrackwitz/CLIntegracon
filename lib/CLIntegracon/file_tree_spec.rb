@@ -39,11 +39,11 @@ module CLIntegracon
 
     # Init a spec with a given context
     #
-    # @param [FileTreeSpecContext] context
-    #        The context, which configures path and file behaviors
+    # @param  [FileTreeSpecContext] context
+    #         The context, which configures path and file behaviors
     #
-    # @param [String] spec_folder
-    #        The concrete spec folder
+    # @param  [String] spec_folder
+    #         The concrete spec folder
     #
     def initialize(context, spec_folder)
       @context = context
@@ -52,11 +52,11 @@ module CLIntegracon
 
     # Run this spec
     #
-    # @param [Block<(FileTreeSpec)->()>] block
-    #        The block, which will be executed after chdir into the created temporary
-    #        directory. In this block you will likely run your modifications to the
-    #        file system and use the received FileTreeSpec instance to make asserts
-    #        with the test framework of your choice.
+    # @param  [Block<(FileTreeSpec)->()>] block
+    #         The block, which will be executed after chdir into the created temporary
+    #         directory. In this block you will likely run your modifications to the
+    #         file system and use the received FileTreeSpec instance to make asserts
+    #         with the test framework of your choice.
     #
     def run(&block)
       prepare!
@@ -71,9 +71,9 @@ module CLIntegracon
     # Compares the expected and produced directory by using the rules
     # defined in the context
     #
-    # @param [Block<(Diff)->()>] diff_block
-    #        The block, where you will likely define a test for each file to compare.
-    #        It will receive a Diff of each of the expected and produced files.
+    # @param  [Block<(Diff)->()>] diff_block
+    #         The block, where you will likely define a test for each file to compare.
+    #         It will receive a Diff of each of the expected and produced files.
     #
     def compare(&diff_block)
       transform_paths!
@@ -82,12 +82,10 @@ module CLIntegracon
         expected = after_path + relative_path
 
         next unless expected.file?
+        next if context.ignores?(relative_path)
 
-        block = special_behavior_for_path relative_path
-        next if block == context.class.nop
-
-        diff = diff_files(expected, relative_path)
-        diff.preparator = block unless block.nil?
+        block = context.preprocessors_for(relative_path).first
+        diff = diff_files(expected, relative_path, &block)
 
         diff_block.call diff
       end
@@ -100,9 +98,9 @@ module CLIntegracon
     # test case for each file, which wasn't expected at all. So you can
     # keep your test cases consistent.
     #
-    # @param [Block<(Array)->()>] diff_block
-    #        The block, where you will likely define a test that no unexpected files exists.
-    #        It will receive an Array.
+    # @param  [Block<(Array)->()>] diff_block
+    #         The block, where you will likely define a test that no unexpected files exists.
+    #         It will receive an Array.
     #
     def check_unexpected_files(&block)
       expected_files = glob_all after_path
@@ -113,7 +111,7 @@ module CLIntegracon
       unexpected_files.select! { |path| path.file? }
 
       # Filter ignored paths
-      unexpected_files.reject! { |path| special_behavior_for_path(path) == context.class.nop }
+      unexpected_files.reject! { |path| context.ignores?(path) }
 
       block.call unexpected_files
     end
@@ -149,10 +147,9 @@ module CLIntegracon
       # Applies the in the context configured transformations.
       #
       def transform_paths!
-        context.transform_paths.each do |path, block|
-          Dir.glob(path) do |produced_path|
-            produced = Pathname(produced_path)
-            block.call(produced)
+        glob_all.each do |path|
+          context.transformers_for(path).each do |transformer|
+            transformer.call(path)
           end
         end
       end
@@ -160,53 +157,37 @@ module CLIntegracon
       # Searches recursively for all files and take care for including hidden files
       # if this is configured in the context.
       #
-      # @param [String] path
-      #        The relative or absolute path to search in (optional)
+      # @param  [String] path
+      #         The relative or absolute path to search in (optional)
       #
       # @return [Array<Pathname>]
       #
       def glob_all(path=nil)
         Dir.chdir path || '.' do
-          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).sort.map { |path|
-            Pathname(path)
-          }
-        end
-      end
-
-      # Find the special behavior for a given path
-      #
-      # @return [Block<(Pathname) -> to_s>]
-      #         This block takes the Pathname and transforms the file in a better comparable
-      #         state. If it returns nil, the file is ignored.
-      #
-      def special_behavior_for_path(path)
-        context.special_paths.each do |key, block|
-          matched = if key.is_a?(Regexp)
-            path.to_s.match(key)
-          else
-            File.fnmatch(key, path)
+          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).sort.map do |p|
+            Pathname(p)
           end
-          next unless matched
-          return block
         end
-        return nil
       end
 
       # Compares two files to check if they are identical and produces a clear diff
       # to highlight the differences.
       #
-      # @param [Pathname] expected
-      #        The file in the after directory
+      # @param  [Pathname] expected
+      #         The file in the after directory
       #
-      # @param [Pathname] relative_path
-      #        The file in the temp directory
+      # @param  [Pathname] relative_path
+      #         The file in the temp directory
+      #
+      # @param  [Block<(Pathname)->(to_s)>] block
+      #         the block, which transforms the files in a better comparable form
       #
       # @return [Diff]
       #         An object holding a diff
       #
-      def diff_files(expected, relative_path)
+      def diff_files(expected, relative_path, &block)
         produced = temp_path + relative_path
-        Diff.new(expected, produced, relative_path)
+        Diff.new(expected, produced, relative_path, &block)
       end
 
   end

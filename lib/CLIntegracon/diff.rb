@@ -20,45 +20,45 @@ module CLIntegracon
 
     # @return [Proc<(Pathname)->(to_s)>]
     #         the proc, which transforms the files in a better comparable form
-    attr_accessor :preparator
+    attr_accessor :preprocessor
 
     # Init a new diff
     #
-    # @param [Pathname] expected
-    #        the expected file
+    # @param  [Pathname] expected
+    #         the expected file
     #
-    # @param [Pathname] produced
-    #        the produced file
+    # @param  [Pathname] produced
+    #         the produced file
     #
-    # @param [Pathname] relative_path
-    #        the relative path to the expected file
+    # @param  [Pathname] relative_path
+    #         the relative path to the expected file
     #
-    # @param [Block<(Pathname)->(to_s)>] preparator
-    #        the block, which transforms the files in a better comparable form
+    # @param  [Block<(Pathname)->(to_s)>] preprocessor
+    #         the block, which preprocess the files in a better comparable form
     #
-    def initialize(expected, produced, relative_path=nil, &preparator)
+    def initialize(expected, produced, relative_path=nil, &preprocessor)
       @expected = expected
       @produced = produced
       @relative_path = relative_path
-      preparator ||= Proc.new { |x| x } #id
-      self.preparator = preparator
+      preprocessor ||= Proc.new { |x| x } #id
+      self.preprocessor = preprocessor
     end
 
-    def prepared_expected
-      @prepared_expected ||= preparator.call(expected)
+    def preprocessed_expected
+      @preprocessed_expected ||= preprocessor.call(expected)
     end
 
-    def prepared_produced
-      @prepared_produced ||= preparator.call(produced)
+    def preprocessed_produced
+      @preprocessed_produced ||= preprocessor.call(produced)
     end
 
-    # Check if the prepared inputs are files or need to be dumped first to
+    # Check if the preprocessed inputs are files or need to be dumped first to
     # temporary files to be compared.
     #
     # @return [Bool]
     #
     def compares_files?
-      prepared_expected.is_a? Pathname
+      preprocessed_expected.is_a? Pathname
     end
 
     # Check if the produced output equals the expected
@@ -68,9 +68,9 @@ module CLIntegracon
     #
     def is_equal?
       @is_equal ||= if compares_files?
-        FileUtils.compare_file(prepared_expected, prepared_produced)
+        FileUtils.compare_file(preprocessed_expected, preprocessed_produced)
       else
-        prepared_expected == prepared_produced
+        preprocessed_expected == preprocessed_produced
       end
     end
 
@@ -86,7 +86,7 @@ module CLIntegracon
         :source  => compares_files? ? 'files' : 'strings',
         :context => 3
       }.merge options
-      Diffy::Diff.new(prepared_expected.to_s, prepared_produced.to_s, options).each &block
+      Diffy::Diff.new(preprocessed_expected.to_s, preprocessed_produced.to_s, options).each &block
     end
 
   end

@@ -39,6 +39,11 @@ begin
       ].join " | "
     end
 
+    desc 'Approve the bacon integration execution output as acceptable'
+    task :rebuild_bacon_integration do
+      `bundle exec rake spec:bacon_integration_runner > spec/bacon/execution_output.txt`
+    end
+
     desc 'Run all integration specs'
     task :integration => [
       'spec:bacon_integration'

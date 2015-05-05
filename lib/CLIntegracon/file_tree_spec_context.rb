@@ -29,13 +29,17 @@ module CLIntegracon
     #
     attr_accessor :temp_path
 
-    # @return [Hash<String,Block>]
-    #         the special paths of files, which need to be transformed in a better comparable form
+    # @return [Hash<String|Regexp,Block>]
+    #         the paths of files, which need to be transformed in a better comparable form
     attr_accessor :transform_paths
 
-    # @return [Hash<String,Block>]
-    #         the special paths of files, where an individual file diff handling is needed
-    attr_accessor :special_paths
+    # @return [Hash<String|Regexp,Block>]
+    #         the paths of files, where an individual file diff handling is needed
+    attr_accessor :preprocess_paths
+
+    # @return [Array<String|Regexp>]
+    #         the paths of files to exclude from comparison
+    attr_accessor :ignore_paths
 
     # @return [Bool]
     #         whether to include hidden files, when searching directories (true by default)
@@ -49,12 +53,12 @@ module CLIntegracon
 
     # "Designated" initializer
     #
-    # @param [Hash<Symbol,String>] properties
-    #        The configuration parameter (optional):
-    #        :spec_path   => see self.spec_path
-    #        :before_dir  => see self.before_dir
-    #        :after_dir   => see self.after_dir
-    #        :temp_path   => see self.temp_path
+    # @param  [Hash<Symbol,String>] properties
+    #         The configuration parameter (optional):
+    #         :spec_path   => see self.spec_path
+    #         :before_dir  => see self.before_dir
+    #         :after_dir   => see self.after_dir
+    #         :temp_path   => see self.temp_path
     #
     def initialize(properties={})
       self.spec_path   = properties[:spec_path]   || '.'
@@ -62,21 +66,9 @@ module CLIntegracon
       self.before_dir  = properties[:before_dir]  || 'before'
       self.after_dir   = properties[:after_dir]   || 'after'
       self.transform_paths = {}
-      self.special_paths = {}
+      self.preprocess_paths = {}
+      self.ignore_paths = []
       self.include_hidden_files = true
-    end
-
-
-    #-----------------------------------------------------------------------------#
-
-    # @!group Helper
-
-    # This value is used for ignored paths
-    #
-    # @return [Proc]
-    #         Does nothing
-    def self.nop
-      @nop ||= Proc.new {}
     end
 
 
@@ -109,11 +101,12 @@ module CLIntegracon
 
     # @!group DSL-like Setter
 
-    # Registers a block for special handling certain files, matched with globs.
+    # Registers a block to transform certain files, matched with globs or
+    # regular expressions.
     # Multiple transformers can match a single file.
     #
     # @param  [String...] file_paths
-    #         The file path(s) of the files, which were created/changed and need transformation
+    #         The path(s), which need to be transformed in a better comparable form
     #
     # @param  [Block<(Pathname) -> ()>] block
     #         The block, which takes each of the matched files, transforms it if needed
@@ -127,31 +120,70 @@ module CLIntegracon
       end
     end
 
-    # Registers a block for special handling certain files, matched with globs.
+    # Registers a block to preprocess certain files, matched with globs or
+    # regular expressions.
     # Registered file paths will be excluded from default comparison by `diff`.
-    # Multiple special handlers can match a single file.
+    # A file is preprocessed with the first matching preprocessor.
     #
     # @param  [String|Regexp...] file_paths
-    #         The file path(s) of the files, which were created/changed and need special comparison
+    #         The path(s)s, where an individual file diff handling is needed
     #
     # @param  [Block<(Pathname) -> (String)>] block
     #         The block, which takes each of the matched files, transforms it if needed
     #         in a better comparable form.
     #
-    def has_special_handling_for(*file_paths, &block)
+    def preprocess(*file_paths, &block)
       file_paths.each do |file_path|
-        self.special_paths[file_path] = block
+        self.preprocess_paths[file_path] = block
       end
     end
 
     # Copies the before subdirectory of the given tests folder in the temporary
     # directory.
     #
-    # @param  [String|RegExp...] file_path
-    #         the file path of the files, which were changed and need special comparison
+    # @param  [String|RegExp...] file_paths
+    #         the file path(s) of the files to exclude from comparison
     #
-    def ignores(*file_path)
-      has_special_handling_for *file_path, &self.class.nop
+    def ignores(*file_paths)
+      self.ignore_paths += file_paths
+    end
+
+
+    #-----------------------------------------------------------------------------#
+
+    # @!group Path accessors
+
+    # Returns a list of transformers to apply for a given file path.
+    #
+    # @param  [Pathname] file_path
+    #         The file path to match
+    #
+    # @return [Array<Block<(Pathname) -> ()>>]
+    #
+    def transformers_for(file_path)
+      select_matching_file_patterns(transform_paths, file_path).values
+    end
+
+    # Returns a list of preprocessors to apply for a given file path.
+    #
+    # @param  [Pathname] file_path
+    #         The file path to match
+    #
+    # @return [Array<Block<(Pathname) -> (String)>>]
+    #
+    def preprocessors_for(file_path)
+      select_matching_file_patterns(preprocess_paths, file_path).values
+    end
+
+    # Checks whether a given file path is to ignore.
+    #
+    # @param  [Pathname] file_path
+    #         The file path to match
+    #
+    # @return [Bool]
+    #
+    def ignores?(file_path)
+      !select_matching_file_patterns(ignore_paths, file_path).empty?
     end
 
 
@@ -168,13 +200,39 @@ module CLIntegracon
 
     # Get a specific spec with given folder to run it
     #
-    # @param [String] folder
-    #        The name of the folder of the tests
+    # @param  [String] folder
+    #         The name of the folder of the tests
     #
     # @return [FileTreeSpec]
     #
     def spec(spec_folder)
       FileTreeSpec.new(self, spec_folder)
+    end
+
+    #-----------------------------------------------------------------------------#
+
+    private
+
+    # @!group Helpers
+
+    # Select elements in an enumerable which match the given path.
+    #
+    # @param  [Enumerable<String|RegExp>] patterns
+    #         The patterns to check
+    #
+    # @param  [Pathname] path
+    #         The file to match
+    #
+    # @return [Enumerable<String|RegExp>]
+    #
+    def select_matching_file_patterns(patterns, path)
+      patterns.select do |pattern|
+        if pattern.is_a?(Regexp)
+          path.to_s.match(pattern)
+        else
+          File.fnmatch(pattern, path)
+        end
+      end
     end
 
   end
