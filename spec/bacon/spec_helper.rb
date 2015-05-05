@@ -53,6 +53,11 @@ describe CLIntegracon::Adapter::Bacon do
         behaves_like cli_spec('coffeemaker_sweetner_honey', '--sweetner=honey')
       end
 
+      describe 'without milk and honey as sweetner' do
+        behaves_like cli_spec('coffeemaker_no_milk_sweetner_honey', '--no-milk --sweetner=honey',
+                              based_on: 'coffeemaker_sweetner_honey')
+      end
+
     end
 
     describe 'Get help' do
