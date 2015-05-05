@@ -29,7 +29,7 @@ module CLIntegracon
     #
     attr_accessor :temp_path
 
-    # @return [Hash<String,Block>]
+    # @return [Hash<String|Regexp,Block>]
     #         the paths of files, which need to be transformed in a better comparable form
     attr_accessor :transform_paths
 
@@ -101,11 +101,12 @@ module CLIntegracon
 
     # @!group DSL-like Setter
 
-    # Registers a block for special handling certain files, matched with globs.
+    # Registers a block to transform certain files, matched with globs or
+    # regular expressions.
     # Multiple transformers can match a single file.
     #
     # @param  [String...] file_paths
-    #         The file path(s) of the files, which were created/changed and need transformation
+    #         The path(s), which need to be transformed in a better comparable form
     #
     # @param  [Block<(Pathname) -> ()>] block
     #         The block, which takes each of the matched files, transforms it if needed
@@ -150,6 +151,17 @@ module CLIntegracon
     #-----------------------------------------------------------------------------#
 
     # @!group Path accessors
+
+    # Returns a list of transformers to apply for a given file path.
+    #
+    # @param  [Pathname] file_path
+    #         The file path to match
+    #
+    # @return [Array<Block<(Pathname) -> ()>>]
+    #
+    def transformers_for(file_path)
+      select_matching_file_patterns(transform_paths, file_path).values
+    end
 
     # Checks whether a given file path is to ignore.
     #

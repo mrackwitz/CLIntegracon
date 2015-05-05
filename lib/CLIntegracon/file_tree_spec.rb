@@ -148,10 +148,9 @@ module CLIntegracon
       # Applies the in the context configured transformations.
       #
       def transform_paths!
-        context.transform_paths.each do |path, block|
-          Dir.glob(path) do |produced_path|
-            produced = Pathname(produced_path)
-            block.call(produced)
+        glob_all.each do |path|
+          context.transformers_for(path).each do |transformer|
+            transformer.call(path)
           end
         end
       end
