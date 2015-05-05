@@ -48,11 +48,11 @@ module CLIntegracon::Adapter::Bacon
 
     # Works like `behaves_like`, but takes arguments for the shared example
     #
-    # @param [String] name
-    #        name of the shared context.
+    # @param  [String] name
+    #         name of the shared context.
     #
-    # @param [...] args
-    #        params to pass to the shared context
+    # @param  [...] args
+    #         params to pass to the shared context
     #
     def behaves_like_a(name, *args)
       instance_exec(*args, &Bacon::Shared[name])

@@ -39,11 +39,11 @@ module CLIntegracon
 
     # Init a spec with a given context
     #
-    # @param [FileTreeSpecContext] context
-    #        The context, which configures path and file behaviors
+    # @param  [FileTreeSpecContext] context
+    #         The context, which configures path and file behaviors
     #
-    # @param [String] spec_folder
-    #        The concrete spec folder
+    # @param  [String] spec_folder
+    #         The concrete spec folder
     #
     def initialize(context, spec_folder)
       @context = context
@@ -52,11 +52,11 @@ module CLIntegracon
 
     # Run this spec
     #
-    # @param [Block<(FileTreeSpec)->()>] block
-    #        The block, which will be executed after chdir into the created temporary
-    #        directory. In this block you will likely run your modifications to the
-    #        file system and use the received FileTreeSpec instance to make asserts
-    #        with the test framework of your choice.
+    # @param  [Block<(FileTreeSpec)->()>] block
+    #         The block, which will be executed after chdir into the created temporary
+    #         directory. In this block you will likely run your modifications to the
+    #         file system and use the received FileTreeSpec instance to make asserts
+    #         with the test framework of your choice.
     #
     def run(&block)
       prepare!
@@ -71,9 +71,9 @@ module CLIntegracon
     # Compares the expected and produced directory by using the rules
     # defined in the context
     #
-    # @param [Block<(Diff)->()>] diff_block
-    #        The block, where you will likely define a test for each file to compare.
-    #        It will receive a Diff of each of the expected and produced files.
+    # @param  [Block<(Diff)->()>] diff_block
+    #         The block, where you will likely define a test for each file to compare.
+    #         It will receive a Diff of each of the expected and produced files.
     #
     def compare(&diff_block)
       transform_paths!
@@ -100,9 +100,9 @@ module CLIntegracon
     # test case for each file, which wasn't expected at all. So you can
     # keep your test cases consistent.
     #
-    # @param [Block<(Array)->()>] diff_block
-    #        The block, where you will likely define a test that no unexpected files exists.
-    #        It will receive an Array.
+    # @param  [Block<(Array)->()>] diff_block
+    #         The block, where you will likely define a test that no unexpected files exists.
+    #         It will receive an Array.
     #
     def check_unexpected_files(&block)
       expected_files = glob_all after_path
@@ -160,8 +160,8 @@ module CLIntegracon
       # Searches recursively for all files and take care for including hidden files
       # if this is configured in the context.
       #
-      # @param [String] path
-      #        The relative or absolute path to search in (optional)
+      # @param  [String] path
+      #         The relative or absolute path to search in (optional)
       #
       # @return [Array<Pathname>]
       #
@@ -195,11 +195,11 @@ module CLIntegracon
       # Compares two files to check if they are identical and produces a clear diff
       # to highlight the differences.
       #
-      # @param [Pathname] expected
-      #        The file in the after directory
+      # @param  [Pathname] expected
+      #         The file in the after directory
       #
-      # @param [Pathname] relative_path
-      #        The file in the temp directory
+      # @param  [Pathname] relative_path
+      #         The file in the temp directory
       #
       # @return [Diff]
       #         An object holding a diff

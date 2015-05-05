@@ -24,17 +24,17 @@ module CLIntegracon
 
     # Init a new diff
     #
-    # @param [Pathname] expected
-    #        the expected file
+    # @param  [Pathname] expected
+    #         the expected file
     #
-    # @param [Pathname] produced
-    #        the produced file
+    # @param  [Pathname] produced
+    #         the produced file
     #
-    # @param [Pathname] relative_path
-    #        the relative path to the expected file
+    # @param  [Pathname] relative_path
+    #         the relative path to the expected file
     #
-    # @param [Block<(Pathname)->(to_s)>] preparator
-    #        the block, which transforms the files in a better comparable form
+    # @param  [Block<(Pathname)->(to_s)>] preparator
+    #         the block, which transforms the files in a better comparable form
     #
     def initialize(expected, produced, relative_path=nil, &preparator)
       @expected = expected

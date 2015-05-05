@@ -49,12 +49,12 @@ module CLIntegracon
 
     # "Designated" initializer
     #
-    # @param [Hash<Symbol,String>] properties
-    #        The configuration parameter (optional):
-    #        :spec_path   => see self.spec_path
-    #        :before_dir  => see self.before_dir
-    #        :after_dir   => see self.after_dir
-    #        :temp_path   => see self.temp_path
+    # @param  [Hash<Symbol,String>] properties
+    #         The configuration parameter (optional):
+    #         :spec_path   => see self.spec_path
+    #         :before_dir  => see self.before_dir
+    #         :after_dir   => see self.after_dir
+    #         :temp_path   => see self.temp_path
     #
     def initialize(properties={})
       self.spec_path   = properties[:spec_path]   || '.'
@@ -168,8 +168,8 @@ module CLIntegracon
 
     # Get a specific spec with given folder to run it
     #
-    # @param [String] folder
-    #        The name of the folder of the tests
+    # @param  [String] folder
+    #         The name of the folder of the tests
     #
     # @return [FileTreeSpec]
     #

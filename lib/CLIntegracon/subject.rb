@@ -42,11 +42,11 @@ module CLIntegracon
 
     # "Designated" initializer
     #
-    # @param [String] name
-    #        The name of the binary
+    # @param  [String] name
+    #         The name of the binary
     #
-    # @param [String] executable
-    #        The executable subject statement (optional)
+    # @param  [String] executable
+    #         The executable subject statement (optional)
     #
     def initialize(name='subject', executable=nil)
       self.name = name
@@ -65,11 +65,11 @@ module CLIntegracon
     # Define a pattern, whose occurrences in the output should be replaced by a
     # given placeholder.
     #
-    # @param [Regexp|String] pattern
-    #        The pattern
+    # @param  [Regexp|String] pattern
+    #         The pattern
     #
-    # @param [String] replacement
-    #        The replacement
+    # @param  [String] replacement
+    #         The replacement
     #
     def replace_pattern(pattern, replacement)
       self.replace_patterns[replacement] = pattern
@@ -78,11 +78,11 @@ module CLIntegracon
     # Define a path, whose occurrences in the output should be replaced by
     # either its basename or a given placeholder.
     #
-    # @param [String] path
-    #        The path
+    # @param  [String] path
+    #         The path
     #
-    # @param [String] name
-    #        The name of the path, or the basename of the given path
+    # @param  [String] name
+    #         The name of the path, or the basename of the given path
     #
     def replace_path(path, name=nil)
       name ||= File.basename path
@@ -92,11 +92,11 @@ module CLIntegracon
     # Define a path in the user directory, whose occurrences in the output
     # should be replaced by either its basename or a given placeholder.
     #
-    # @param [String] path
-    #        The path
+    # @param  [String] path
+    #         The path
     #
-    # @param [String] name
-    #        The name of the path, or the given path
+    # @param  [String] name
+    #         The name of the path, or the given path
     #
     def replace_user_path(path, name=nil)
       name ||= "$HOME/#{path}"
