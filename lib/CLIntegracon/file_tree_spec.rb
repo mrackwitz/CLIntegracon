@@ -3,6 +3,10 @@ require 'CLIntegracon/diff'
 require 'CLIntegracon/formatter'
 
 module CLIntegracon
+  # FileTreeSpec represents a single specification, which is mirrored
+  # on the file system in the spec directory by a direct children.
+  # It contains a +before+ directory (#before_path) and an +after+
+  # directory (#after_path).
   class FileTreeSpec
 
     # @return [FileTreeSpecContext]
