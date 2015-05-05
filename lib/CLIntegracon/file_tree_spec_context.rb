@@ -35,7 +35,7 @@ module CLIntegracon
 
     # @return [Hash<String,Block>]
     #         the paths of files, where an individual file diff handling is needed
-    attr_accessor :special_paths
+    attr_accessor :preprocess_paths
 
     # @return [Array<String|Regexp>]
     #         the paths of files to exclude from comparison
@@ -66,7 +66,7 @@ module CLIntegracon
       self.before_dir  = properties[:before_dir]  || 'before'
       self.after_dir   = properties[:after_dir]   || 'after'
       self.transform_paths = {}
-      self.special_paths = {}
+      self.preprocess_paths = {}
       self.ignore_paths = []
       self.include_hidden_files = true
     end
@@ -133,7 +133,7 @@ module CLIntegracon
     #
     def has_special_handling_for(*file_paths, &block)
       file_paths.each do |file_path|
-        self.special_paths[file_path] = block
+        self.preprocess_paths[file_path] = block
       end
     end
 
@@ -171,7 +171,7 @@ module CLIntegracon
     # @return [Array<Block<(Pathname) -> (String)>>]
     #
     def preprocessors_for(file_path)
-      select_matching_file_patterns(special_paths, file_path).values
+      select_matching_file_patterns(preprocess_paths, file_path).values
     end
 
     # Checks whether a given file path is to ignore.
