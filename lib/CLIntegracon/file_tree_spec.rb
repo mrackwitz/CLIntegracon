@@ -84,8 +84,7 @@ module CLIntegracon
         next unless expected.file?
         next if context.ignores?(relative_path)
 
-        block = special_behavior_for_path relative_path
-
+        block = context.preprocessors_for(relative_path).first
         diff = diff_files(expected, relative_path, &block)
 
         diff_block.call diff
@@ -169,25 +168,6 @@ module CLIntegracon
             Pathname(p)
           end
         end
-      end
-
-      # Find the special behavior for a given path
-      #
-      # @return [Block<(Pathname) -> to_s>]
-      #         This block takes the Pathname and transforms the file in a better comparable
-      #         state. If it returns nil, the file is ignored.
-      #
-      def special_behavior_for_path(path)
-        context.special_paths.each do |key, block|
-          matched = if key.is_a?(Regexp)
-            path.to_s.match(key)
-          else
-            File.fnmatch(key, path)
-          end
-          next unless matched
-          return block
-        end
-        return nil
       end
 
       # Compares two files to check if they are identical and produces a clear diff

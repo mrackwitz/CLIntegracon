@@ -163,6 +163,17 @@ module CLIntegracon
       select_matching_file_patterns(transform_paths, file_path).values
     end
 
+    # Returns a list of preprocessors to apply for a given file path.
+    #
+    # @param  [Pathname] file_path
+    #         The file path to match
+    #
+    # @return [Array<Block<(Pathname) -> (String)>>]
+    #
+    def preprocessors_for(file_path)
+      select_matching_file_patterns(special_paths, file_path).values
+    end
+
     # Checks whether a given file path is to ignore.
     #
     # @param  [Pathname] file_path
