@@ -3,6 +3,14 @@ require 'CLIntegracon/diff'
 require 'CLIntegracon/formatter'
 
 module CLIntegracon
+  # FileTreeSpec represents a single specification, which is mirrored
+  # on the file system in the spec directory by a direct children.
+  # It contains a before directory (#before_path) and an after
+  # directory (#after_path) or if it is initialized with a #base_spec,
+  # the before directory of this spec is used. The before directory
+  # contents in the #spec_path of the child spec, can contain further
+  # files, which overwrite, if given, the inherited contents.
+  #
   class FileTreeSpec
 
     # @return [FileTreeSpecContext]
@@ -37,6 +45,25 @@ module CLIntegracon
       context.temp_path + spec_folder
     end
 
+    # @return [String|NilClass]
+    #         The name of an optional #base_spec.
+    attr_reader :base_spec_name
+
+    # Return whether this spec is based on another spec.
+    #
+    # @return  [Bool]
+    #
+    def has_base?
+      !base_spec_name.nil?
+    end
+
+    # @return [FileTreeSpec|NilClass]
+    #         The spec on whose #after_path will be used as #before_path
+    #         for this spec.
+    def base_spec
+      has_base? ? context.spec(base_spec_name) : nil
+    end
+
     # Init a spec with a given context
     #
     # @param  [FileTreeSpecContext] context
@@ -45,9 +72,13 @@ module CLIntegracon
     # @param  [String] spec_folder
     #         The concrete spec folder
     #
-    def initialize(context, spec_folder)
+    # @param  [String] based_on
+    #         @see #base_spec_name
+    #
+    def initialize(context, spec_folder, based_on: nil)
       @context = context
       @spec_folder = spec_folder
+      @base_spec_name = based_on
     end
 
     # Run this spec
@@ -139,9 +170,17 @@ module CLIntegracon
       # directory.
       #
       def copy_files!
-        source = before_path
         destination = temp_path
-        FileUtils.cp_r("#{source}/.", destination)
+
+        if has_base?
+          FileUtils.cp_r("#{base_spec.after_path}/.", destination)
+        end
+
+        begin
+          FileUtils.cp_r("#{before_path}/.", destination)
+        rescue Errno::ENOENT => e
+          raise e unless has_base?
+        end
       end
 
       # Applies the in the context configured transformations.

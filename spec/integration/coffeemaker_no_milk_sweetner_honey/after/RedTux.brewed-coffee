@@ -1,0 +1,2 @@
+class RedTux < BrewedCoffee
+  @sweetner = sugar

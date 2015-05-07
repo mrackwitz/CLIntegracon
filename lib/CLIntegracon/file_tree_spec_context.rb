@@ -203,10 +203,13 @@ module CLIntegracon
     # @param  [String] folder
     #         The name of the folder of the tests
     #
+    # @param  [String] based_on
+    #         @see FileTreeSpec#base_spec_name
+    #
     # @return [FileTreeSpec]
     #
-    def spec(spec_folder)
-      FileTreeSpec.new(self, spec_folder)
+    def spec(spec_folder, based_on: nil)
+      FileTreeSpec.new(self, spec_folder, based_on: based_on)
     end
 
     #-----------------------------------------------------------------------------#

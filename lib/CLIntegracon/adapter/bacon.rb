@@ -69,17 +69,26 @@ module CLIntegracon::Adapter::Bacon
     # @param   [String] spec_dir
     #          the concrete directory of the spec, see {file_spec}.
     #
-    # @param   [String] args
-    #          the additional arguments to pass on launch to {CLIntegracon::Subject}.
+    # @param   [String] head_args
+    #          the arguments to pass before the +default_args+ on launch to {CLIntegracon::Subject}.
+    #
+    # @param   [String] tail_args
+    #          the arguments to pass after the +default_args+ on launch to {CLIntegracon::Subject}.
+    #
+    # @param   [String] based_on
+    #          Allows to specify an optional base spec, whose after directory will be used
+    #          as before directory. You have to ensure that the specs are defined in order,
+    #          so that the base spec was executed before.
     #
     # @return  [String]
     #          name of the set of shared expectations
     #
-    def cli_spec(spec_dir, *args)
-      file_spec spec_dir do
-        output = subject.launch(*args)
+    def cli_spec(spec_dir, head_args=nil, tail_args=nil, based_on: nil)
+      file_spec(spec_dir, based_on: based_on) do
+        output = subject.launch(head_args, tail_args)
         status = $?
 
+        args = [head_args, tail_args].compact
         it "$ #{subject.name} #{args.join(' ')}" do
           status.should.satisfy("Binary failed\n\n#{output}") do
             status.success?
@@ -102,6 +111,10 @@ module CLIntegracon::Adapter::Bacon
     #          the concrete directory of the spec to be passed to
     #          {FileTreeSpecContext.spec}
     #
+    # @param   [String] based_on
+    #          Allows to specify an optional base spec, whose after directory will be used
+    #          as before directory.
+    #
     # @param   [Block<() -> ()>] block
     #          the block which will be executed after the before state is laid out in the
     #          temporary directory, which normally will make modifications to file system,
@@ -110,13 +123,13 @@ module CLIntegracon::Adapter::Bacon
     # @return  [String]
     #          name of the set of shared expectations
     #
-    def file_spec(spec_dir, &block)
+    def file_spec(spec_dir, based_on: nil, &block)
       raise ArgumentError.new("Spec directory is missing!") if spec_dir.nil?
 
       shared_name = spec_dir
 
       shared shared_name do
-        file_tree_spec_context.spec(spec_dir).run do |spec|
+        file_tree_spec_context.spec(spec_dir, based_on: based_on).run do |spec|
           instance_eval &block
 
           formatter = spec.formatter.lazy

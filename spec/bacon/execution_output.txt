@@ -20,6 +20,17 @@ CLIntegracon::Adapter::Bacon
         - RedTux.brewed-coffee [FAILED]
         - execution_output.txt
         - should not produce unexpected files [FAILED]
+      without milk and honey as sweetner
+        - $ coffee-maker --no-milk --sweetner=honey
+        - Affogato.brewed-coffee
+        - Affogato.brewed-coffee.decanted
+        - BlackEye.brewed-coffee
+        - BlackEye.brewed-coffee.decanted
+        - Coffeemakerfile.yml
+        - RedTux.brewed-coffee
+        - RedTux.brewed-coffee.decanted
+        - execution_output.txt
+        - should not produce unexpected files
     Get help
       - $ coffee-maker --help
       - execution_output.txt
@@ -90,4 +101,4 @@ Bacon::Error: Unexpected files for coffeemaker_sweetner_honey:
 	spec/bacon/spec_helper.rb:17
 	spec/bacon/spec_helper.rb:15
 
-20 specifications (33 requirements), 6 failures, 0 errors
+30 specifications (51 requirements), 6 failures, 0 errors

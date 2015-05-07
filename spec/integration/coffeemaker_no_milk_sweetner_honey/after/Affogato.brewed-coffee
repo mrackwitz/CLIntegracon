@@ -1,0 +1,2 @@
+class Affogato < BrewedCoffee
+  @sweetner = honey

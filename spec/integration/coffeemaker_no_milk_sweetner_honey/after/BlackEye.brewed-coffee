@@ -1,0 +1,2 @@
+class BlackEye < BrewedCoffee
+  @sweetner = honey
