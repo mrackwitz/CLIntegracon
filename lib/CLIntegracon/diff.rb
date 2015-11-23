@@ -74,6 +74,16 @@ module CLIntegracon
       end
     end
 
+    # Check if the files have equal permissions
+    #
+    # @return [Bool]
+    #         whether the expected permissions are equal to the produced
+    #
+    def have_equal_permissions?
+      return true unless compares_files?
+      preprocessed_expected.stat.mode == preprocessed_produced.stat.mode
+    end
+
     # Enumerate all lines which differ.
     #
     # @param  [Hash] options

@@ -3,7 +3,7 @@ CLIntegracon::Adapter::Bacon
     Brew recipes
       without milk
         - $ coffee-maker --no-milk
-        - BlackEye.brewed-coffee
+        - BlackEye.brewed-coffee [FAILED]
         - BlackEye.brewed-coffee.decanted
         - CaPheSuaDa.brewed-coffee [FAILED]
         - CaPheSuaDa.brewed-coffee.decanted
@@ -35,6 +35,16 @@ CLIntegracon::Adapter::Bacon
       - $ coffee-maker --help
       - execution_output.txt
       - should not produce unexpected files
+
+Bacon::Error: File permission error `BlackEye.brewed-coffee` for coffeemaker_no_milk:
+[32mExpected: 100755[0m
+[31mProduced: 100644[0m
+
+	spec/bacon/spec_helper.rb:49
+	spec/bacon/spec_helper.rb:48
+	spec/bacon/spec_helper.rb:46
+	spec/bacon/spec_helper.rb:17
+	spec/bacon/spec_helper.rb:15
 
 Bacon::Error: File comparison error `CaPheSuaDa.brewed-coffee` for coffeemaker_no_milk:
 --- DIFF -----------------------------------------------------------------------
@@ -101,4 +111,4 @@ Bacon::Error: Unexpected files for coffeemaker_sweetner_honey:
 	spec/bacon/spec_helper.rb:17
 	spec/bacon/spec_helper.rb:15
 
-30 specifications (51 requirements), 6 failures, 0 errors
+30 specifications (69 requirements), 7 failures, 0 errors

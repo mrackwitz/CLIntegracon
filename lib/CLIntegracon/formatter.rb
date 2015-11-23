@@ -131,6 +131,23 @@ module CLIntegracon
       description * "\n"
     end
 
+    # Return a description text for an expectation that the permissions
+    # of two files were expected to be the same, but are not.
+    #
+    # @param  [Diff] diff
+    #         the diff which holds the differing files
+    #
+    # @return [String]
+    #
+    def describe_file_permission_diff(diff)
+      description = []
+      description << "File permission error `#{diff.relative_path}` for #{spec.spec_folder}:"
+      description << "Expected: %o".green % diff.preprocessed_expected.stat.mode
+      description << "Produced: %o".red   % diff.preprocessed_produced.stat.mode
+      description << ''
+      description * "\n"
+    end
+
     # Return a description text for an expectation that two files were
     # expected to be the same, but are not.
     #
