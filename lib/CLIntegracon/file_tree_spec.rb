@@ -45,6 +45,18 @@ module CLIntegracon
       context.temp_path + spec_folder
     end
 
+    # @return [Pathname]
+    #         The concrete temp raw directory for this spec
+    def temp_raw_path
+      temp_path + 'raw'
+    end
+
+    # @return [Pathname]
+    #         The concrete transformed temp directory for this spec
+    def temp_transformed_path
+      temp_path + 'transformed'
+    end
+
     # @return [String|NilClass]
     #         The name of an optional #base_spec.
     attr_reader :base_spec_name
@@ -94,7 +106,7 @@ module CLIntegracon
 
       copy_files!
 
-      Dir.chdir(temp_path) do
+      Dir.chdir(temp_transformed_path) do
         block.call self
       end
     end
@@ -107,6 +119,9 @@ module CLIntegracon
     #         It will receive a Diff of each of the expected and produced files.
     #
     def compare(&diff_block)
+      # Get a copy of the outputs before any transformations are applied
+      FileUtils.cp_r("#{temp_transformed_path}/.", temp_raw_path)
+
       transform_paths!
 
       glob_all(after_path).each do |relative_path|
@@ -164,16 +179,18 @@ module CLIntegracon
 
         temp_path.rmtree if temp_path.exist?
         temp_path.mkdir
+        temp_raw_path.mkdir
+        temp_transformed_path.mkdir
       end
 
-      # Copies the before subdirectory of the given tests folder in the temporary
+      # Copies the before subdirectory of the given tests folder in the raw
       # directory.
       #
       def copy_files!
-        destination = temp_path
+        destination = temp_transformed_path
 
         if has_base?
-          FileUtils.cp_r("#{base_spec.after_path}/.", destination)
+          FileUtils.cp_r("#{base_spec.temp_raw_path}/.", destination)
         end
 
         begin
@@ -225,7 +242,7 @@ module CLIntegracon
       #         An object holding a diff
       #
       def diff_files(expected, relative_path, &block)
-        produced = temp_path + relative_path
+        produced = temp_transformed_path + relative_path
         Diff.new(expected, produced, relative_path, &block)
       end
 
