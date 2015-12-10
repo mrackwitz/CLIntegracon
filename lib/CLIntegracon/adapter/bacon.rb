@@ -94,6 +94,7 @@ module CLIntegracon::Adapter::Bacon
             status.success?
           end
         end
+        status.success?
       end
     end
 
@@ -130,7 +131,7 @@ module CLIntegracon::Adapter::Bacon
 
       shared shared_name do
         file_tree_spec_context.spec(spec_dir, based_on: based_on).run do |spec|
-          instance_eval &block
+          break unless instance_eval &block
 
           formatter = spec.formatter.lazy
 
