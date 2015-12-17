@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    clintegracon (0.7.0)
+    clintegracon (0.8.0)
       colored (~> 1.2)
       diffy
 
@@ -60,3 +60,6 @@ DEPENDENCIES
   inch
   mocha-on-bacon
   rake
+
+BUNDLED WITH
+   1.10.6
