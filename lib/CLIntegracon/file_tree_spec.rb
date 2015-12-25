@@ -207,6 +207,7 @@ module CLIntegracon
           context.transformers_for(path).each do |transformer|
             transformer.call(path) if path.exist?
           end
+          path.rmtree if context.ignores?(path) && path.exist?
         end
       end
 
