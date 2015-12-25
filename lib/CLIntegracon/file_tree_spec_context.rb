@@ -233,7 +233,9 @@ module CLIntegracon
         if pattern.is_a?(Regexp)
           path.to_s.match(pattern)
         else
-          File.fnmatch(pattern, path, File::FNM_PATHNAME)
+          flags = File::FNM_PATHNAME
+          flags |= File::FNM_DOTMATCH if include_hidden_files?
+          File.fnmatch(pattern, path, flags)
         end
       end
     end
