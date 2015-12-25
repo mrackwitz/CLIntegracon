@@ -205,7 +205,7 @@ module CLIntegracon
       def transform_paths!
         glob_all.each do |path|
           context.transformers_for(path).each do |transformer|
-            transformer.call(path)
+            transformer.call(path) if path.exist?
           end
         end
       end
