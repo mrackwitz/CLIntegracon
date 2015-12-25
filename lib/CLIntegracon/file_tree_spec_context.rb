@@ -233,7 +233,7 @@ module CLIntegracon
         if pattern.is_a?(Regexp)
           path.to_s.match(pattern)
         else
-          File.fnmatch(pattern, path)
+          File.fnmatch(pattern, path, File::FNM_PATHNAME)
         end
       end
     end
