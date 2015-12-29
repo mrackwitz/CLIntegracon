@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    clintegracon (0.8.0)
+    clintegracon (0.8.1)
       colored (~> 1.2)
       diffy
 
