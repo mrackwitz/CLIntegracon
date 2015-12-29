@@ -205,8 +205,9 @@ module CLIntegracon
       def transform_paths!
         glob_all.each do |path|
           context.transformers_for(path).each do |transformer|
-            transformer.call(path)
+            transformer.call(path) if path.exist?
           end
+          path.rmtree if context.ignores?(path) && path.exist?
         end
       end
 
@@ -220,8 +221,8 @@ module CLIntegracon
       #
       def glob_all(path=nil)
         Dir.chdir path || '.' do
-          Dir.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).sort.map do |p|
-            Pathname(p)
+          Pathname.glob("**/*", context.include_hidden_files? ? File::FNM_DOTMATCH : 0).sort.reject do |p|
+            %w(. ..).include?(p.basename.to_s)
           end
         end
       end
