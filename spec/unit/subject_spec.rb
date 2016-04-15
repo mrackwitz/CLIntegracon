@@ -16,11 +16,11 @@ describe CLIntegracon::Subject do
         /Users/marius/.im/chat.log
         /tmp/im/chat.log
       eos
-      @subject.expects(:`).returns(output)
+      Open3.expects(:capture2e).returns([output, mock()])
       @subject.stubs(:write_output)
       @subject.replace_user_path '.im/chat.log'
       @subject.replace_path '/tmp', '$TMP'
-      @subject.launch.should.be == <<-eos.strip_heredoc
+      @subject.launch.first.should.be == <<-eos.strip_heredoc
         $HOME/.im/chat.log
         $TMP/im/chat.log
       eos
@@ -32,11 +32,11 @@ describe CLIntegracon::Subject do
         Fri Nov 14 22:46:54 - @olivier > Hi
         Fri Nov 14 22:47:13 - @marius > hey
       eos
-      @subject.expects(:`).returns(output)
+      Open3.expects(:capture2e).returns([output, mock()])
       @subject.stubs(:write_output)
       @subject.replace_pattern /\w{3} \w{3} \d{2} \d{2}:\d{2}:\d{2}/, '<#DATE#>'
       @subject.replace_pattern /@\w+/, '<REDACTED>'
-      @subject.launch.should.be == <<-eos.strip_heredoc
+      @subject.launch.first.should.be == <<-eos.strip_heredoc
         <#DATE#> - <REDACTED> > ¡Hola!
         <#DATE#> - <REDACTED> > Hi
         <#DATE#> - <REDACTED> > hey

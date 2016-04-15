@@ -122,9 +122,10 @@ module CLIntegracon
     #
     def launch(head_arguments='', tail_arguments='')
       command = command_line(head_arguments, tail_arguments)
-      output = apply_replacements(run(command))
+      output, status = run(command)
+      output = apply_replacements(output)
       write_output(command, output)
-      output
+      [output, status]
     end
 
     #-----------------------------------------------------------------------------#
@@ -147,11 +148,13 @@ module CLIntegracon
     # @param  [String] command_line
     #         THe command line to execute
     #
-    # @return [String]
-    #         The output, which is emitted while execution.
+    # @return [[String, Process::Status]]
+    #         The output, which is emitted during execution, and the exit status.
     #
     def run(command_line)
-      `#{environment_var_assignments} #{command_line} 2>&1`
+      require 'open3'
+      env = Hash[environment_vars.map { |k, v| [k.to_s, v.to_s] }]
+      Open3.capture2e(env, command_line.to_s)
     end
 
     # Merges the given with the configured arguments and returns the command
