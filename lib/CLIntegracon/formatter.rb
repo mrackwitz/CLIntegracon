@@ -151,7 +151,7 @@ module CLIntegracon
           when /^\+/ then line.green
           when /^-/ then  line.red
           else            line
-        end.gsub("\n",'')
+        end.gsub("\n",'').gsub("\r", '\r')
       end
       description << "--- END ".ljust(max_width, '-')
       description << ''
