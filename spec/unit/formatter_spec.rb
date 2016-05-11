@@ -65,6 +65,20 @@ $after
 --- END ------------
 EOS
       end
+
+      it 'should show carriage returns' do
+        diff = ['$before', "+ $blah\radd", "- $blah\rremoved", '$after']
+        diff.stubs(:relative_path => '$relative_path')
+        @formatter.describe_file_diff(diff, 20).to_s.should.be.eql? <<-EOS
+File comparison error `$relative_path` for $spec_folder:
+--- DIFF -----------
+$before
+\e[32m+ $blah\\radd\e[0m
+\e[31m- $blah\\rremoved\e[0m
+$after
+--- END ------------
+EOS
+      end
     end
   end
 
