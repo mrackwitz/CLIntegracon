@@ -85,8 +85,7 @@ module CLIntegracon::Adapter::Bacon
     #
     def cli_spec(spec_dir, head_args=nil, tail_args=nil, based_on: nil)
       file_spec(spec_dir, based_on: based_on) do
-        output = subject.launch(head_args, tail_args)
-        status = $?
+        output, status = subject.launch(head_args, tail_args)
 
         args = [head_args, tail_args].compact
         it "$ #{subject.name} #{args.join(' ')}" do
