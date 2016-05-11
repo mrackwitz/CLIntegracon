@@ -67,11 +67,15 @@ module CLIntegracon
     #         whether the expected is equal to the produced
     #
     def is_equal?
-      @is_equal ||= if compares_files?
+      return @is_equal if defined?(@is_equal)
+      @is_equal = if compares_files?
         FileUtils.compare_file(preprocessed_expected, preprocessed_produced)
       else
         preprocessed_expected == preprocessed_produced
       end
+      @is_equal ||= Diffy::Diff.new(preprocessed_expected.to_s, preprocessed_produced.to_s,
+                                    :source  => compares_files? ? 'files' : 'strings')
+                                   .none? { |l| l.start_with?('+', '-')}
     end
 
     # Enumerate all lines which differ.
@@ -88,6 +92,5 @@ module CLIntegracon
       }.merge options
       Diffy::Diff.new(preprocessed_expected.to_s, preprocessed_produced.to_s, options).each &block
     end
-
   end
 end
