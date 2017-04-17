@@ -143,6 +143,10 @@ module CLIntegracon::Adapter::Bacon
               diff.produced.should.satisfy(formatter.describe_file_diff(diff)) do
                 diff.is_equal?
               end
+
+              diff.produced.should.satisfy(formatter.describe_file_permission_diff(diff)) do
+                diff.have_equal_permissions?
+              end
             end
           end
 
