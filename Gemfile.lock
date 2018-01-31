@@ -33,6 +33,8 @@ GEM
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
       mocha (>= 0.13.0)
+    prettybacon (0.0.2)
+      bacon (~> 1.2)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -59,6 +61,7 @@ DEPENDENCIES
   clintegracon!
   inch
   mocha-on-bacon
+  prettybacon
   rake
 
 BUNDLED WITH
