@@ -31,6 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "prettybacon"
   spec.add_development_dependency "rake"
 
-  spec.add_runtime_dependency 'colored', '~> 1.2'
+  spec.add_runtime_dependency 'colored2', '~> 3.1'
   spec.add_runtime_dependency 'diffy'
 end

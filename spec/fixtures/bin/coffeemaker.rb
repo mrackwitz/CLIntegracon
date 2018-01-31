@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 require 'claide'
-require 'colored'
+require 'colored2'
 require 'yaml'
 
 # Don’t worry, this makes no sense, just an example
