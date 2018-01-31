@@ -1,6 +1,14 @@
 module CLIntegracon
   class Subject
 
+    ReplacementPattern = Struct.new(:pattern, :replacement) do
+      # Applies the replacement pattern to the given output, returning
+      # a new string with the replacement applied
+      def replace(output)
+        output.gsub(pattern, replacement)
+      end
+    end
+
     #-----------------------------------------------------------------------------#
 
     # @!group Attributes
@@ -24,9 +32,8 @@ module CLIntegracon
     #         Those are added behind the arguments given on +launch+.
     attr_accessor :default_args
 
-    # @return [Hash<String|Regexp,String>]
-    #         The replace patterns, whose keys are expected to occur in the output,
-    #         which should be redacted, when the subject will be executed. These are
+    # @return [Array<ReplacementPattern>]
+    #         The replace patterns that are redacted when the subject is executed. These are
     #         e.g. paths were side-effects occur, like manipulation of user configurations
     #         in dot files or caching-specific directories or just dates and times.
     attr_accessor :replace_patterns
@@ -53,7 +60,7 @@ module CLIntegracon
       self.executable = executable || name
       self.environment_vars = {}
       self.default_args = []
-      self.replace_patterns = {}
+      self.replace_patterns = []
       self.output_path = 'execution_output.txt'
     end
 
@@ -72,7 +79,7 @@ module CLIntegracon
     #         The replacement
     #
     def replace_pattern(pattern, replacement)
-      self.replace_patterns[replacement] = pattern
+      self.replace_patterns << ReplacementPattern.new(pattern, replacement)
     end
 
     # Define a path, whose occurrences in the output should be replaced by
@@ -183,10 +190,9 @@ module CLIntegracon
     #         The redacted output.
     #
     def apply_replacements(output)
-      replace_patterns.each do |key, path|
-        output = output.gsub(path, key)
+      replace_patterns.reduce(output) do |output, replacement_pattern|
+        replacement_pattern.replace(output)
       end
-      output
     end
 
     # Saves the output in a file called #output_path, relative to current dir.
