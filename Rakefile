@@ -2,7 +2,7 @@
 
 begin
   require 'bundler/gem_tasks'
-  require 'colored'
+  require 'colored2'
 
   namespace :spec do
 

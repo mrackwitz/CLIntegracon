@@ -22,14 +22,15 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency 'activesupport', '>= 3.1'
   spec.add_development_dependency "bacon"
-  spec.add_development_dependency "mocha-on-bacon"
+  spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "claide", "~> 0.8"    # Example CLI
   spec.add_development_dependency "inch"
-  spec.add_development_dependency 'activesupport', '>= 3.1'
+  spec.add_development_dependency "mocha-on-bacon"
+  spec.add_development_dependency "prettybacon"
+  spec.add_development_dependency "rake"
 
-  spec.add_runtime_dependency 'colored', '~> 1.2'
+  spec.add_runtime_dependency 'colored2', '~> 3.1'
   spec.add_runtime_dependency 'diffy'
 end

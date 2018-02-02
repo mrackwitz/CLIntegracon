@@ -42,6 +42,23 @@ describe CLIntegracon::Subject do
         <#DATE#> - <REDACTED> > hey
       eos
     end
+
+    it 'should replace multiple patterns with the same replacement string' do
+      output = <<-eos.strip_heredoc
+        abc
+        cde
+        efg
+      eos
+      Open3.expects(:capture2e).returns([output, mock()])
+      @subject.stubs(:write_output)
+      @subject.replace_pattern /b/, ''
+      @subject.replace_pattern /f/, ''
+      @subject.launch.first.should == <<-eos.strip_heredoc
+        ac
+        cde
+        eg
+      eos
+    end
   end
 
 end

@@ -1,5 +1,5 @@
 require 'pathname'
-require 'colored'
+require 'colored2'
 require 'diffy'
 
 module CLIntegracon
