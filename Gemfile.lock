@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    clintegracon (0.8.1)
+    clintegracon (0.9.0)
       colored2 (~> 3.1)
       diffy
 
@@ -18,7 +18,7 @@ GEM
     claide (0.8.1)
     coderay (1.1.0)
     colored2 (3.1.2)
-    diffy (3.2.0)
+    diffy (3.2.1)
     i18n (0.7.0)
     inch (0.6.1)
       pry
@@ -65,4 +65,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   1.16.1
+   1.16.6
