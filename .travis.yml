@@ -1,9 +1,12 @@
 language: ruby
+dist: xenial
 rvm:
   - 3.0.0
   - 2.5.0
+include:
   # OS X 10.9.5-10.10.0 (2.0.0-p481)
-  - 2.0.0-p481
+  - rvm: 2.0.0-p481
+    dist: trusty
 
 #addons:
 # code_climate:

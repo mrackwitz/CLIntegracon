@@ -193,10 +193,11 @@ module CLIntegracon::Adapter::Bacon
       Context.instance_methods.each do |method|
         class << self; self end.instance_eval do
           unbound_method = extended.method(method).unbind
-
-          send :define_method, method do |*args, &b|
+          body = proc do |*args, &b|
             unbound_method.bind(self).call(*args, &b)
           end
+          body = body.ruby2_keywords if body.respond_to?(:ruby2_keywords)
+          send(:define_method, method, &body)
         end
       end
 
