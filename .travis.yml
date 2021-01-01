@@ -11,4 +11,7 @@ rvm:
 
 bundler_args: --without=documentation
 
+before_install:
+  - gem install bundler -v "~> 1.17"
+
 script: bundle exec rake spec
