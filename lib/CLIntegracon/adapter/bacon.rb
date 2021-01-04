@@ -9,6 +9,7 @@ end
 # Define concrete adapter
 module CLIntegracon::Adapter::Bacon
   module Context
+    def self.ruby2_keywords(sym); sym; end unless respond_to? :ruby2_keywords
 
     # Get or configure the current subject
     #
@@ -83,6 +84,7 @@ module CLIntegracon::Adapter::Bacon
     # @return  [String]
     #          name of the set of shared expectations
     #
+    ruby2_keywords \
     def cli_spec(spec_dir, head_args=nil, tail_args=nil, based_on: nil)
       file_spec(spec_dir, based_on: based_on) do
         output, status = subject.launch(head_args, tail_args)
@@ -123,6 +125,7 @@ module CLIntegracon::Adapter::Bacon
     # @return  [String]
     #          name of the set of shared expectations
     #
+    ruby2_keywords \
     def file_spec(spec_dir, based_on: nil, &block)
       raise ArgumentError.new("Spec directory is missing!") if spec_dir.nil?
 
@@ -190,10 +193,11 @@ module CLIntegracon::Adapter::Bacon
       Context.instance_methods.each do |method|
         class << self; self end.instance_eval do
           unbound_method = extended.method(method).unbind
-
-          send :define_method, method do |*args, &b|
+          body = proc do |*args, &b|
             unbound_method.bind(self).call(*args, &b)
           end
+          body = body.ruby2_keywords if body.respond_to?(:ruby2_keywords)
+          send(:define_method, method, &body)
         end
       end
 
