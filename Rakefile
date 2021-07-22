@@ -30,7 +30,7 @@ begin
     desc 'Run the tasks for bacon integration spec verbose and without any outer expectations'
     task :bacon_integration_runner do
       sh [
-        'bundle exec bacon spec/bacon/spec_helper.rb',
+        'ruby -rbundler/setup -S bacon spec/bacon/spec_helper.rb',
         'sed -e "s|$(dirname ~/.)|\$HOME|g"',
         # Keep exception formatting of different ruby versions clean and compatible
         'sed -E "s|^([[:space:]])./|\1|g"',
