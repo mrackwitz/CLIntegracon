@@ -9,7 +9,6 @@ end
 # Define concrete adapter
 module CLIntegracon::Adapter::Bacon
   module Context
-
     # Get or configure the current subject
     #
     # @note On first call this will create a new subject on base of the
@@ -84,6 +83,10 @@ module CLIntegracon::Adapter::Bacon
     #          name of the set of shared expectations
     #
     def cli_spec(spec_dir, head_args=nil, tail_args=nil, based_on: nil)
+      raise ArgumentError, "Must pass a string for head_args, given #{head_args.inspect}" if !head_args.nil? && !head_args.is_a?(String)
+      raise ArgumentError, "Must pass a string for tail_args, given #{tail_args.inspect}" if !tail_args.nil? && !tail_args.is_a?(String)
+      raise ArgumentError, "Must pass a string for based_on, given #{based_on.inspect}" if !based_on.nil? && !based_on.is_a?(String)
+
       file_spec(spec_dir, based_on: based_on) do
         output, status = subject.launch(head_args, tail_args)
 
@@ -159,6 +162,19 @@ module CLIntegracon::Adapter::Bacon
       shared_name
     end
 
+    def describe(*args, &block)
+      context = Bacon::Context.new(args.join(' '), &block)
+      (parent_context = self).methods(false).each {|e|
+        context.singleton_class.send(:define_method, e) { |args| parent_context.send(e, *args) }
+      }
+      context.extend Context
+      context.instance_variable_set(:@subject, @subject)
+      context.instance_variable_set(:@file_tree_spec_context, @file_tree_spec_context)
+      @before.each { |b| context.before(&b) }
+      @after.each { |b| context.after(&b) }
+      context.run
+    end
+
   end
 
   # Describe a command line interface
@@ -180,34 +196,15 @@ module CLIntegracon::Adapter::Bacon
   #         known from {Bacon::Context.describe}
   #
   def describe_cli(subject_name, context_options = {}, &block)
-    context = describe subject_name do
-      # Make Context methods available
-      # WORKAROUND: Bacon auto-inherits singleton methods to child contexts
-      # by using the runtime and won't include methods in modules included
-      # by the parent context. We have to ensure that the methods will be
-      # accessible by the child contexts by defining them as singleton methods.
-      extended = self.extend Context
-      Context.instance_methods.each do |method|
-        class << self; self end.instance_eval do
-          unbound_method = extended.method(method).unbind
-
-          send :define_method, method do |*args, &b|
-            unbound_method.bind(self).call(*args, &b)
-          end
-        end
-      end
-
+    describe subject_name do
+      extend Context
       subject do |s|
         s.name       = subject_name
         s.executable = context_options[:executable] || subject_name
       end
 
       instance_eval &block
-    end
-
-    Bacon::ErrorLog.gsub! %r{^.*lib/CLIntegracon/.*\n}, ''
-
-    context
+    end.tap { Bacon::ErrorLog.gsub! %r{^.*lib/CLIntegracon/.*\n}, '' }
   end
 
 end
