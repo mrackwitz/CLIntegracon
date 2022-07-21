@@ -44,9 +44,9 @@ GEM
     sparkr (0.4.1)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tins (1.5.1)
-    tzinfo (1.2.2)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     yard (0.8.7.6)
 
